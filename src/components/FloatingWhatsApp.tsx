@@ -47,10 +47,10 @@ export const FloatingWhatsApp: React.FC = () => {
   };
 
   return (
-    <div className="fixed bottom-5 left-5 z-40">
+    <div className="fixed bottom-4 sm:bottom-5 left-3 sm:left-5 z-40 max-w-[calc(100vw-1.5rem)]">
       {/* Quick Selection Dialog */}
       {isOpen && (
-        <div className="mb-3 w-80 sm:w-88 bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-200">
+        <div className="mb-3 w-[calc(100vw-1.5rem)] max-w-xs sm:w-88 sm:max-w-sm bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-200">
           {/* Header */}
           <div className="bg-[#075E54] text-white p-4 flex items-center justify-between">
             <div className="flex items-center gap-2.5">

@@ -37,7 +37,7 @@ export const Hero: React.FC<HeroProps> = ({
         {/* Main Clean Header */}
         <div className="max-w-3xl space-y-4">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold text-amber-400 bg-amber-400/10 border border-amber-400/20">
-            <span>Direct Wholesale Manufacturing</span>
+            <span>Wholesale Supply &amp; Institutional Distribution</span>
           </div>
 
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight font-heading leading-tight text-white">
@@ -45,16 +45,16 @@ export const Hero: React.FC<HeroProps> = ({
           </h1>
 
           <p className="text-sm sm:text-base text-slate-300 leading-relaxed font-normal">
-            We manufacture and supply uniforms, footwear, and linens for schools, hospitals, hotels, and corporate organizations across India. Direct wholesale rates with custom institution branding.
+            We are a premier supply partner providing uniforms, footwear, and bulk linens for schools, hospitals, hotels, and corporate organizations across India. Direct wholesale rates with custom institutional branding.
           </p>
 
           {/* Action Buttons */}
-          <div className="flex flex-wrap items-center gap-3 pt-2">
+          <div className="flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-2.5 sm:gap-3 pt-2">
             <button
               type="button"
               id="hero-primary-calc-quote"
               onClick={onOpenQuoteModal}
-              className="inline-flex items-center gap-2 bg-amber-400 hover:bg-amber-300 text-slate-950 px-5 py-2.5 rounded-full font-bold text-xs sm:text-sm transition-all"
+              className="inline-flex items-center justify-center gap-2 bg-amber-400 hover:bg-amber-300 text-slate-950 px-5 py-3 sm:py-2.5 rounded-full font-bold text-xs sm:text-sm transition-all shadow-md active:scale-98"
             >
               <FileText className="w-4 h-4" />
               <span>Calculate Bulk Price (₹)</span>
@@ -64,7 +64,7 @@ export const Hero: React.FC<HeroProps> = ({
               type="button"
               id="hero-secondary-swatch-kit"
               onClick={onOpenSwatchModal}
-              className="inline-flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 px-5 py-2.5 rounded-full font-semibold text-xs sm:text-sm transition-all"
+              className="inline-flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 px-5 py-3 sm:py-2.5 rounded-full font-semibold text-xs sm:text-sm transition-all active:scale-98"
             >
               <Sparkles className="w-4 h-4 text-amber-400" />
               <span>Request Fabric Swatches</span>
@@ -73,7 +73,7 @@ export const Hero: React.FC<HeroProps> = ({
             <button
               type="button"
               onClick={scrollToCatalog}
-              className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-slate-300 hover:text-white px-3 py-2 transition-colors"
+              className="inline-flex items-center justify-center gap-1.5 text-xs sm:text-sm font-semibold text-slate-300 hover:text-white px-3 py-2.5 sm:py-2 transition-colors"
             >
               <span>View Products</span>
               <ArrowDown className="w-3.5 h-3.5" />

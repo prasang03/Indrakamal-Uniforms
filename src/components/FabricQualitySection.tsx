@@ -21,7 +21,7 @@ export const FabricQualitySection: React.FC<FabricQualitySectionProps> = ({
     },
     {
       title: 'Institution Branding',
-      description: 'Precise computer embroidery, heat transfer, woven school ties, and custom crest belts manufactured to your exact colors.',
+      description: 'Precise computer embroidery, heat transfer, woven school ties, and custom crest belts tailored and supplied to your exact colors.',
       icon: <Sparkles className="w-5 h-5 text-indigo-700" />,
     },
   ];
@@ -33,7 +33,7 @@ export const FabricQualitySection: React.FC<FabricQualitySectionProps> = ({
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
           <div>
             <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 font-heading">
-              Manufacturing Specifications
+              Quality &amp; Material Specifications
             </h2>
             <p className="text-xs sm:text-sm text-slate-600 mt-1">
               Standard fabric composition and construction practices across our institutional supply orders.

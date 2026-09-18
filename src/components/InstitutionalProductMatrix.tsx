@@ -95,11 +95,11 @@ export const InstitutionalProductMatrix: React.FC<InstitutionalProductMatrixProp
             </p>
           </div>
 
-          <div className="flex items-center gap-2 shrink-0">
+          <div className="flex items-center gap-2 w-full sm:w-auto shrink-0">
             <button
               type="button"
               onClick={onOpenSwatchModal}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-300 transition-colors"
+              className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-3.5 py-2.5 sm:py-2 rounded-full text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-300 transition-colors"
             >
               <Sparkles className="w-3.5 h-3.5 text-amber-500" />
               <span>Sample Swatches</span>
@@ -107,7 +107,7 @@ export const InstitutionalProductMatrix: React.FC<InstitutionalProductMatrixProp
             <button
               type="button"
               onClick={onOpenQuoteModal}
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold text-white bg-indigo-900 hover:bg-indigo-800 transition-colors shadow-xs"
+              className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-4 py-2.5 sm:py-2 rounded-full text-xs font-bold text-white bg-indigo-900 hover:bg-indigo-800 transition-colors shadow-xs"
             >
               <FileText className="w-3.5 h-3.5 text-indigo-300" />
               <span>Calculate Quote</span>
@@ -120,7 +120,7 @@ export const InstitutionalProductMatrix: React.FC<InstitutionalProductMatrixProp
           <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-between">
             
             {/* Category Tabs */}
-            <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-thin">
+            <div className="flex items-center gap-1.5 overflow-x-auto pb-2 scrollbar-thin -mx-1 px-1">
               {sectors.map((sec) => {
                 const isActive = !isSearching && activeTab === sec.id;
                 return (
@@ -128,7 +128,7 @@ export const InstitutionalProductMatrix: React.FC<InstitutionalProductMatrixProp
                     key={sec.id}
                     type="button"
                     onClick={() => handleTabClick(sec.id)}
-                    className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-bold whitespace-nowrap transition-all ${
+                    className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-bold whitespace-nowrap transition-all shrink-0 ${
                       isActive
                         ? 'bg-indigo-900 text-white shadow-xs'
                         : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
@@ -151,7 +151,7 @@ export const InstitutionalProductMatrix: React.FC<InstitutionalProductMatrixProp
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search products (e.g. shoes, scrubs, sheets)..."
-                className="w-full pl-8 pr-7 py-1.5 bg-slate-50 border border-slate-200 rounded-full text-xs text-slate-900 placeholder-slate-400 focus:outline-hidden focus:ring-1 focus:ring-indigo-600 focus:bg-white"
+                className="w-full pl-8 pr-7 py-2 sm:py-1.5 bg-slate-50 border border-slate-200 rounded-full text-xs text-slate-900 placeholder-slate-400 focus:outline-hidden focus:ring-1 focus:ring-indigo-600 focus:bg-white"
               />
               {searchQuery && (
                 <button
@@ -185,7 +185,7 @@ export const InstitutionalProductMatrix: React.FC<InstitutionalProductMatrixProp
         {displayedProducts.length === 0 ? (
           <div className="py-12 text-center text-slate-500 text-xs bg-slate-50 rounded-2xl border border-slate-200 space-y-2">
             <p className="font-semibold text-slate-700">No products found for &ldquo;{searchQuery}&rdquo;</p>
-            <p>We manufacture custom attire upon request. Contact us or clear search.</p>
+            <p>We supply custom institutional attire upon request. Contact us or clear search.</p>
             <button
               type="button"
               onClick={() => setSearchQuery('')}

@@ -159,7 +159,7 @@ export default function App() {
           />
         )}
 
-        {/* Manufacturing & Fabric Lab Standards */}
+        {/* Quality & Fabric Supply Standards */}
         <FabricQualitySection
           onOpenSwatchModal={() => setIsSwatchModalOpen(true)}
         />

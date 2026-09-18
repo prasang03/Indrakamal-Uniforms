@@ -69,9 +69,9 @@ export const Header: React.FC<HeaderProps> = ({
       {/* Top Notification Bar */}
       <div className="bg-[#001845] text-slate-200 text-xs py-1.5 sm:py-2 px-3 sm:px-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-2 text-left">
-          <div className="flex items-center gap-2 font-medium truncate">
-            <span className="text-slate-300">
-              Institutional Uniforms &amp; Textiles &bull; Direct Wholesale Manufacturing
+          <div className="flex items-center gap-2 font-medium truncate min-w-0">
+            <span className="text-slate-300 truncate text-[11px] sm:text-xs">
+              <span className="hidden sm:inline">Institutional Uniforms &amp; Textiles &bull; </span>Wholesale Supply &amp; Distribution
             </span>
           </div>
 
@@ -82,15 +82,15 @@ export const Header: React.FC<HeaderProps> = ({
             >
               <Phone className="w-3 h-3 text-emerald-400 shrink-0" />
               <span className="hidden sm:inline">Phone: </span>
-              <span className="font-semibold">+91 93025 02587</span>
+              <span className="font-semibold text-[11px] sm:text-xs">+91 93025 02587</span>
             </a>
-            <span className="hidden sm:inline text-slate-600">|</span>
+            <span className="hidden md:inline text-slate-600">|</span>
             <a 
-              href="mailto:sales@indrakamaluniforms.com" 
-              className="hidden sm:inline-flex items-center gap-1.5 text-slate-300 hover:text-white transition-colors"
+              href="mailto:indrakamaltradesolutions@gmail.com" 
+              className="hidden md:inline-flex items-center gap-1.5 text-slate-300 hover:text-white transition-colors"
             >
               <Mail className="w-3 h-3 text-indigo-400 shrink-0" />
-              <span>sales@indrakamaluniforms.com</span>
+              <span>indrakamaltradesolutions@gmail.com</span>
             </a>
           </div>
         </div>
@@ -159,7 +159,7 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
 
           {/* Mobile/Tablet menu toggle buttons */}
-          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+          <div className="flex lg:hidden items-center gap-1.5 sm:gap-2 shrink-0">
             <button
               type="button"
               id="mobile-quote-trigger"
@@ -190,7 +190,7 @@ export const Header: React.FC<HeaderProps> = ({
 
       {/* Mobile Menu Dropdown */}
       {mobileMenuOpen && (
-        <div className="xl:hidden border-t border-slate-200 bg-white px-4 pt-3 pb-6 space-y-3 shadow-xl rounded-b-3xl">
+        <div className="lg:hidden border-t border-slate-200 bg-white px-4 pt-3 pb-6 space-y-3 shadow-xl rounded-b-3xl">
           <div>
             <div className="text-xs font-bold text-slate-400 uppercase tracking-widest px-2 mb-2">
               Institutional Supply Divisions

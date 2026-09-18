@@ -37,24 +37,21 @@ export const Footer: React.FC<FooterProps> = ({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Main Footer Container */}
-        <div className="bg-[#001845] text-slate-200 rounded-[2.5rem] p-8 sm:p-12 border border-indigo-900/80 shadow-2xl space-y-12">
+        <div className="bg-[#001845] text-slate-200 rounded-2xl sm:rounded-[2.5rem] p-5 sm:p-8 lg:p-12 border border-indigo-900/80 shadow-2xl space-y-8 sm:space-y-12">
           
           {/* Main 4-Column Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
             
             {/* Column 1: Brand & Entity (lg:col-span-4) */}
             <div className="lg:col-span-4 space-y-5">
-              <div className="space-y-3">
+              <div>
                 <div className="inline-flex bg-white py-2.5 px-3.5 rounded-2xl shadow-sm border border-slate-100">
                   <IndrakamalLogo theme="light" size="md" />
-                </div>
-                <div className="inline-flex items-center gap-1.5 text-xs font-bold text-indigo-400 bg-indigo-950/60 px-3 py-1 rounded-full border border-indigo-800/50">
-                  <span>Indrakamal Ventures Pvt Ltd.</span>
                 </div>
               </div>
 
               <p className="text-xs text-slate-400 leading-relaxed">
-                Manufacturing and supply of uniforms, footwear, and linens for schools, hospitals, hotels, and corporate organizations across India.
+                Wholesale supply and institutional distribution of uniforms, footwear, and linens for schools, hospitals, hotels, and corporate organizations across India.
               </p>
 
               {/* Badges */}
@@ -181,7 +178,7 @@ export const Footer: React.FC<FooterProps> = ({
                     <Clock className="w-3 h-3 text-indigo-400" />
                     <span>Dispatch: 12 – 18 Days</span>
                   </div>
-                  <div className="text-[10px] text-slate-500">All India school campus delivery</div>
+                  <div className="text-[10px] text-slate-500">Pan-India institutional doorstep delivery</div>
                 </div>
               </div>
             </div>
@@ -210,7 +207,7 @@ export const Footer: React.FC<FooterProps> = ({
                   </a>
                   <div className="pt-1 border-t border-slate-800 flex items-center gap-2">
                     <a
-                      href="https://wa.me/919302502587?text=Hello%20Indrakamal%20Uniforms%2C%20we%20have%20an%20inquiry%20for%20school%20uniforms."
+                      href="https://wa.me/919302502587?text=Hello%20Indrakamal%20Trade%20Solutions%2C%20we%20have%20an%20inquiry%20for%20institutional%20uniforms%20and%20textiles."
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-1.5 text-[11px] font-bold text-emerald-400 hover:text-emerald-300 transition-colors"
@@ -227,11 +224,11 @@ export const Footer: React.FC<FooterProps> = ({
                     Email Inquiry
                   </span>
                   <a
-                    href="mailto:sales@indrakamaluniforms.com"
+                    href="mailto:indrakamaltradesolutions@gmail.com"
                     className="text-xs text-slate-300 hover:text-white transition-colors flex items-center gap-2 truncate"
                   >
                     <Mail className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
-                    <span className="truncate">sales@indrakamaluniforms.com</span>
+                    <span className="truncate">indrakamaltradesolutions@gmail.com</span>
                   </a>
                 </div>
 
@@ -242,7 +239,7 @@ export const Footer: React.FC<FooterProps> = ({
                   </span>
                   <div className="text-xs text-slate-400 flex items-start gap-2">
                     <MapPin className="w-3.5 h-3.5 text-indigo-400 shrink-0 mt-0.5" />
-                    <span>Indrakamal Ventures Pvt Ltd., India (Pan-India Doorstep Dispatch)</span>
+                    <span>Indrakamal Ventures Pvt Ltd., India</span>
                   </div>
                 </div>
               </div>
@@ -257,7 +254,7 @@ export const Footer: React.FC<FooterProps> = ({
                 &copy; {currentYear} Indrakamal Ventures Pvt Ltd. All rights reserved.
               </p>
               <p className="text-[11px] text-slate-400">
-                School &amp; Institutional Uniform Supply Partner • Nationwide Delivery Across India
+                Institutional Uniform &amp; Linen Partner • Nationwide Delivery Across India
               </p>
             </div>
 

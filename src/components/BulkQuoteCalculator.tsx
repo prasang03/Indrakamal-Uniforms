@@ -160,7 +160,7 @@ export const BulkQuoteCalculator: React.FC<BulkQuoteCalculatorProps> = ({
                 </div>
                 <div className="flex items-center justify-between pt-1 text-[11px] text-slate-500">
                   <span>Business Contact:</span>
-                  <span className="text-slate-800 font-medium">+91 93025 02587 • sales@indrakamaluniforms.com</span>
+                  <span className="text-slate-800 font-medium">+91 93025 02587 • indrakamaltradesolutions@gmail.com</span>
                 </div>
               </div>
 

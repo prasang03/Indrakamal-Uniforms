@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { CLIENT_TESTIMONIALS, MANUFACTURING_METRICS } from '../data/uniformCatalog';
+import { CLIENT_TESTIMONIALS } from '../data/uniformCatalog';
 import { 
   Building2, 
   GraduationCap, 
@@ -66,7 +66,7 @@ export const InstitutionalShowcase: React.FC = () => {
             Trusted by Schools &amp; Educational Institutions
           </h2>
           <p className="text-sm text-slate-600 mt-2 leading-relaxed">
-            We manage uniform supply for over 450+ state board, CBSE, and private schools across India. We take complete school orders, oversee specialized production with dedicated manufacturing lines, and deliver quality uniforms directly to schools.
+            We manage uniform and bulk textile supply for over 450+ state board, CBSE, and private schools across India. We fulfill complete institutional orders, coordinate specialized sourcing with strict quality checks, and deliver quality uniforms directly to schools.
           </p>
         </div>
 
@@ -200,14 +200,16 @@ export const InstitutionalShowcase: React.FC = () => {
         </div>
 
         {/* Testimonials Block - Bento Card */}
-        <div className="bg-white rounded-[2.5rem] border border-slate-200 p-8 sm:p-12 shadow-xs relative overflow-hidden">
+        <div className="bg-white rounded-2xl sm:rounded-[2.5rem] border border-slate-200 p-5 sm:p-8 md:p-12 shadow-xs relative overflow-hidden">
           <div className="max-w-4xl mx-auto">
-            <div className="flex items-center justify-between mb-8">
-              <div className="flex items-center gap-1.5">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
-                ))}
-                <span className="text-xs font-bold text-slate-800 ml-2">5.0 Institutional Quality Rating</span>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 sm:mb-8">
+              <div className="flex items-center gap-1.5 flex-wrap">
+                <div className="flex items-center">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-amber-400 text-amber-400" />
+                  ))}
+                </div>
+                <span className="text-xs font-bold text-slate-800 ml-1.5">5.0 Institutional Quality Rating</span>
               </div>
 
               {/* Selector Dots */}
