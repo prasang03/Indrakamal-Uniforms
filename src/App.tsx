@@ -8,12 +8,13 @@ import { UNIFORM_CATALOG } from './data/uniformCatalog';
 import { UniformCategory, UniformItem, BulkQuoteItem } from './types';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
+import { InstitutionalProductMatrix } from './components/InstitutionalProductMatrix';
 import { CatalogSection } from './components/CatalogSection';
 import { FabricQualitySection } from './components/FabricQualitySection';
-import { InstitutionalShowcase } from './components/InstitutionalShowcase';
 import { ProductDetailModal } from './components/ProductDetailModal';
 import { BulkQuoteCalculator } from './components/BulkQuoteCalculator';
 import { SwatchKitModal } from './components/SwatchKitModal';
+import { FloatingWhatsApp } from './components/FloatingWhatsApp';
 import { Footer } from './components/Footer';
 import { Check, ShoppingBag, ArrowRight } from 'lucide-react';
 
@@ -23,24 +24,24 @@ export default function App() {
   const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
   const [isSwatchModalOpen, setIsSwatchModalOpen] = useState(false);
 
-  // Initial demo items in RFQ basket to let procurement officers immediately explore the calculator
+  // Initial demo items in estimate basket to let school administrators immediately explore the price calculator
   const [quoteItems, setQuoteItems] = useState<BulkQuoteItem[]>([
     {
       uniformId: 'sch-01',
-      uniformName: 'Heritage Crested Institutional School Blazer',
+      uniformName: 'Heritage School Blazer (Boys & Girls)',
       category: 'School',
       quantity: 150,
-      selectedColor: 'Royal Navy Blue',
-      selectedFabricGrade: '70/30 Poly-Wool Serge',
+      selectedColor: 'Navy Blue',
+      selectedFabricGrade: 'Poly-Wool Blend',
       includeEmbroidery: true,
     },
     {
-      uniformId: 'med-01',
-      uniformName: 'MedFlex Pro 4-Way Stretch Antimicrobial Scrub Set',
-      category: 'Healthcare',
-      quantity: 200,
-      selectedColor: 'Deep Surgical Teal',
-      selectedFabricGrade: 'Silver-Ion Micro-Ripstop',
+      uniformId: 'sch-02',
+      uniformName: 'Classic School Shirt (Full & Half Sleeves)',
+      category: 'School',
+      quantity: 300,
+      selectedColor: 'White',
+      selectedFabricGrade: '65% Polyester, 35% Combed Cotton',
       includeEmbroidery: true,
     },
   ]);
@@ -63,7 +64,7 @@ export default function App() {
           idx === existingIndex ? { ...item, quantity: item.quantity + 50 } : item
         )
       );
-      showToast(`Updated ${product.name} quantity in RFQ basket (+50 units)`);
+      showToast(`Updated ${product.name} quantity in estimate (+50 pieces)`);
     } else {
       // Add new
       const newItem: BulkQuoteItem = {
@@ -76,7 +77,7 @@ export default function App() {
         includeEmbroidery: true,
       };
       setQuoteItems((prev) => [...prev, newItem]);
-      showToast(`Added ${product.name} to RFQ basket`);
+      showToast(`Added ${product.name} to estimate list`);
     }
   };
 
@@ -111,6 +112,9 @@ export default function App() {
 
   const quoteUniformIds = quoteItems.map((i) => i.uniformId);
 
+  // Catalog section visibility toggle - currently hidden as requested
+  const SHOW_CATALOG = false;
+
   return (
     <div className="min-h-screen flex flex-col bg-slate-100 text-slate-900 font-sans selection:bg-indigo-200 selection:text-indigo-900">
       
@@ -121,6 +125,7 @@ export default function App() {
         onOpenQuoteModal={() => setIsQuoteModalOpen(true)}
         onOpenSwatchModal={() => setIsSwatchModalOpen(true)}
         quoteItemCount={quoteItems.length}
+        showCatalog={SHOW_CATALOG}
       />
 
       <main className="flex-1">
@@ -129,25 +134,35 @@ export default function App() {
           onSelectCategory={setActiveCategory}
           onOpenQuoteModal={() => setIsQuoteModalOpen(true)}
           onOpenSwatchModal={() => setIsSwatchModalOpen(true)}
+          showCatalog={SHOW_CATALOG}
         />
 
-        {/* Main Attire Catalog Section */}
-        <CatalogSection
-          catalog={UNIFORM_CATALOG}
-          activeCategory={activeCategory}
+        {/* Multi-Sector Institutional Supply Matrix */}
+        <InstitutionalProductMatrix
           onSelectCategory={setActiveCategory}
-          onSelectProduct={setSelectedProduct}
+          onOpenQuoteModal={() => setIsQuoteModalOpen(true)}
+          onOpenSwatchModal={() => setIsSwatchModalOpen(true)}
           onAddToQuote={handleAddToQuote}
+          onSelectProduct={setSelectedProduct}
           quoteUniformIds={quoteUniformIds}
         />
+
+        {/* Main Attire Catalog Section (Hidden for now as requested) */}
+        {SHOW_CATALOG && (
+          <CatalogSection
+            catalog={UNIFORM_CATALOG}
+            activeCategory={activeCategory}
+            onSelectCategory={setActiveCategory}
+            onSelectProduct={setSelectedProduct}
+            onAddToQuote={handleAddToQuote}
+            quoteUniformIds={quoteUniformIds}
+          />
+        )}
 
         {/* Manufacturing & Fabric Lab Standards */}
         <FabricQualitySection
           onOpenSwatchModal={() => setIsSwatchModalOpen(true)}
         />
-
-        {/* Institutional Client Testimonials & Track Record */}
-        <InstitutionalShowcase />
       </main>
 
       {/* Institutional Footer */}
@@ -155,7 +170,11 @@ export default function App() {
         onSelectCategory={(cat) => {
           setActiveCategory(cat);
           const elem = document.getElementById('uniform-catalog');
-          if (elem) elem.scrollIntoView({ behavior: 'smooth' });
+          if (elem) {
+            elem.scrollIntoView({ behavior: 'smooth' });
+          } else {
+            setIsSwatchModalOpen(true);
+          }
         }}
         onOpenQuoteModal={() => setIsQuoteModalOpen(true)}
         onOpenSwatchModal={() => setIsSwatchModalOpen(true)}
@@ -188,7 +207,7 @@ export default function App() {
         onClose={() => setIsSwatchModalOpen(false)}
       />
 
-      {/* Floating Bottom Quick RFQ Bar (visible on mobile / tablet when items are present) */}
+      {/* Floating Bottom Quick Estimate Bar (visible on mobile / tablet when items are present) */}
       {quoteItems.length > 0 && !isQuoteModalOpen && (
         <div className="fixed bottom-5 right-5 sm:bottom-6 sm:right-6 z-30 animate-in slide-in-from-bottom-4 duration-300">
           <button
@@ -203,9 +222,9 @@ export default function App() {
               </span>
             </div>
             <div className="text-left pr-1">
-              <div className="text-xs font-bold leading-tight">View Bulk RFQ</div>
+              <div className="text-xs font-bold leading-tight">Price Estimate (₹)</div>
               <div className="text-[10px] text-indigo-200">
-                {quoteItems.reduce((acc, c) => acc + c.quantity, 0)} Units in Basket
+                {quoteItems.reduce((acc, c) => acc + c.quantity, 0)} pieces in list
               </div>
             </div>
             <ArrowRight className="w-4 h-4 text-indigo-300 group-hover:text-white group-hover:translate-x-0.5 transition-all" />
@@ -222,6 +241,9 @@ export default function App() {
           <span>{toastMessage}</span>
         </div>
       )}
+
+      {/* Direct Institutional Procurement WhatsApp Assistant */}
+      <FloatingWhatsApp />
 
     </div>
   );

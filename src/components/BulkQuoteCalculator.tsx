@@ -39,6 +39,7 @@ export const BulkQuoteCalculator: React.FC<BulkQuoteCalculatorProps> = ({
   const [customLabelsOption, setCustomLabelsOption] = useState<boolean>(true);
   const [individualPackaging, setIndividualPackaging] = useState<boolean>(false);
   const [quickSamplingRequired, setQuickSamplingRequired] = useState<boolean>(true);
+  const [addCategoryFilter, setAddCategoryFilter] = useState<string>('all');
 
   // Form submission state
   const [orgName, setOrgName] = useState('');
@@ -54,56 +55,56 @@ export const BulkQuoteCalculator: React.FC<BulkQuoteCalculatorProps> = ({
   // Total Garments Count
   const totalGarments = quoteItems.reduce((acc, curr) => acc + curr.quantity, 0);
 
-  // Volume discount calculation
+  // Volume discount calculation for Indian school/bulk orders
   let discountPercentage = 0;
-  let tierLabel = 'Standard MOQ Tier';
-  if (totalGarments >= 2000) {
-    discountPercentage = 22;
-    tierLabel = 'Mega Institutional Tier (22% Savings)';
-  } else if (totalGarments >= 500) {
-    discountPercentage = 15;
-    tierLabel = 'Enterprise Volume Tier (15% Savings)';
-  } else if (totalGarments >= 200) {
-    discountPercentage = 8;
-    tierLabel = 'Bulk Academic Tier (8% Savings)';
+  let tierLabel = 'Standard Wholesale Rate';
+  if (totalGarments >= 1000) {
+    discountPercentage = 18;
+    tierLabel = 'Large School / Trust Discount (18% Off)';
+  } else if (totalGarments >= 300) {
+    discountPercentage = 10;
+    tierLabel = 'Full School Batch Discount (10% Off)';
+  } else if (totalGarments >= 100) {
+    discountPercentage = 5;
+    tierLabel = 'Small School Order (5% Off)';
   }
 
-  // Estimated baseline price per garment roughly $10.50 average
-  const baseAvgPrice = 11.5;
+  // Estimated baseline wholesale price per garment in Indian Rupees (~₹320 avg)
+  const baseAvgPrice = 320;
   const subtotalEst = totalGarments * baseAvgPrice;
   const discountedSubtotal = subtotalEst * (1 - discountPercentage / 100);
 
-  const embroideryFee = embroideryOption ? totalGarments * 0.75 : 0;
-  const labelsFee = customLabelsOption ? totalGarments * 0.35 : 0;
-  const packagingFee = individualPackaging ? totalGarments * 0.25 : 0;
+  const embroideryFee = embroideryOption ? totalGarments * 15 : 0; // ₹15 per piece for logo embroidery
+  const labelsFee = customLabelsOption ? totalGarments * 8 : 0;   // ₹8 per piece for school woven label
+  const packagingFee = individualPackaging ? totalGarments * 5 : 0; // ₹5 per piece for polybag packing
 
   const totalEstimate = discountedSubtotal + embroideryFee + labelsFee + packagingFee;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const ref = `IKU-${new Date().getFullYear()}-${Math.floor(10000 + Math.random() * 90000)}`;
+    const ref = `IKU-IND-${new Date().getFullYear()}-${Math.floor(10000 + Math.random() * 90000)}`;
     setQuoteReference(ref);
     setIsSubmitted(true);
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-950/75 backdrop-blur-xs flex items-center justify-center p-4 sm:p-6 animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-950/75 backdrop-blur-xs flex items-center justify-center p-2.5 sm:p-6 animate-in fade-in duration-200">
       <div 
         id="quote-calculator-modal"
-        className="relative bg-white w-full max-w-4xl rounded-[2.5rem] shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[92vh]"
+        className="relative bg-white w-full max-w-4xl rounded-2xl sm:rounded-[2.5rem] shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[94vh] sm:max-h-[92vh]"
       >
         {/* Modal Top Header */}
-        <div className="flex items-center justify-between px-6 sm:px-8 py-5 border-b border-slate-200 bg-slate-50/90">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-indigo-900 text-white flex items-center justify-center shadow-xs">
-              <FileText className="w-5 h-5 text-indigo-300" />
+        <div className="flex items-center justify-between px-4 sm:px-8 py-4 sm:py-5 border-b border-slate-200 bg-slate-50/90 shrink-0">
+          <div className="flex items-center gap-2.5 sm:gap-3">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl sm:rounded-2xl bg-indigo-900 text-white flex items-center justify-center shadow-xs shrink-0">
+              <FileText className="w-4 h-4 sm:w-5 sm:h-5 text-indigo-300" />
             </div>
             <div>
-              <h2 className="text-base font-extrabold text-slate-900 font-heading">
-                Institutional Bulk Quote Builder
+              <h2 className="text-sm sm:text-base font-extrabold text-slate-900 font-heading leading-snug">
+                Institutional Price &amp; Order Estimator (in ₹)
               </h2>
-              <p className="text-xs text-slate-500">
-                Official Indrakamal Uniforms Manufacturing &amp; Wholesale Pricing
+              <p className="text-[11px] sm:text-xs text-slate-500">
+                Indrakamal Uniforms • Fair wholesale pricing for schools &amp; institutions in India
               </p>
             </div>
           </div>
@@ -111,7 +112,7 @@ export const BulkQuoteCalculator: React.FC<BulkQuoteCalculatorProps> = ({
           <button
             type="button"
             onClick={onClose}
-            className="p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-200 rounded-full transition-colors"
+            className="p-1.5 sm:p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-200 rounded-full transition-colors shrink-0"
             aria-label="Close quote calculator"
           >
             <X className="w-5 h-5" />
@@ -119,7 +120,7 @@ export const BulkQuoteCalculator: React.FC<BulkQuoteCalculatorProps> = ({
         </div>
 
         {/* Modal Content */}
-        <div className="overflow-y-auto p-6 sm:p-8 space-y-6">
+        <div className="overflow-y-auto p-4 sm:p-8 space-y-6">
           {isSubmitted ? (
             /* Success confirmation screen */
             <div className="py-10 text-center space-y-5 max-w-lg mx-auto">
@@ -129,44 +130,44 @@ export const BulkQuoteCalculator: React.FC<BulkQuoteCalculatorProps> = ({
 
               <div>
                 <span className="text-xs font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
-                  RFQ Generated Successfully
+                  Inquiry Received Successfully
                 </span>
                 <h3 className="text-2xl font-extrabold text-slate-900 mt-2 font-heading">
-                  Thank You, {contactName || 'Valued Partner'}!
+                  Thank You, {contactName || 'Respected School Management'}!
                 </h3>
                 <p className="text-xs text-slate-600 mt-2 leading-relaxed">
-                  Your formal Request for Quotation for <strong>{orgName}</strong> has been logged into our factory scheduling system.
+                  Your uniform requirement for <strong>{orgName}</strong> has been received by our uniform supply team.
                 </p>
               </div>
 
               {/* RFQ Reference Box */}
               <div className="p-5 rounded-[2rem] bg-slate-50 border border-slate-200 text-left text-xs space-y-2.5">
                 <div className="flex items-center justify-between pb-2 border-b border-slate-200">
-                  <span className="text-slate-500 font-medium">RFQ Reference Number:</span>
+                  <span className="text-slate-500 font-medium">Inquiry Reference Number:</span>
                   <strong className="font-mono font-bold text-indigo-900 text-sm">{quoteReference}</strong>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-slate-500">Total Requested Units:</span>
-                  <strong className="text-slate-900">{totalGarments} Garments</strong>
+                  <span className="text-slate-500">Total Requested Garments:</span>
+                  <strong className="text-slate-900">{totalGarments} Uniforms</strong>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-slate-500">Volume Savings Applied:</span>
+                  <span className="text-slate-500">Volume Discount:</span>
                   <strong className="text-emerald-700 font-bold">{tierLabel}</strong>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-slate-500">Estimated Project Total:</span>
-                  <strong className="text-slate-900 font-bold">${Math.round(totalEstimate).toLocaleString()} USD (approx.)</strong>
+                  <span className="text-slate-500">Estimated Total Cost:</span>
+                  <strong className="text-slate-900 font-bold text-sm">₹{Math.round(totalEstimate).toLocaleString('en-IN')} (approx. wholesale price)</strong>
                 </div>
                 <div className="flex items-center justify-between pt-1 text-[11px] text-slate-500">
-                  <span>Factory Account Manager:</span>
-                  <span className="text-slate-800 font-medium">procurement@indrakamaluniforms.com</span>
+                  <span>Business Contact:</span>
+                  <span className="text-slate-800 font-medium">+91 93025 02587 • sales@indrakamaluniforms.com</span>
                 </div>
               </div>
 
               <div className="text-xs text-slate-600 bg-indigo-50 border border-indigo-200 p-4 rounded-2xl text-left flex items-start gap-2.5">
                 <Info className="w-4 h-4 text-indigo-700 shrink-0 mt-0.5" />
                 <span>
-                  Our Senior Merchandiser will contact you via WhatsApp/Email within <strong>4 working hours</strong> with formal proforma invoicing, computerized embroidery digital mockups, and swatch courier details.
+                  Our team will call or WhatsApp you within <strong>4 hours</strong>. We will arrange free cloth swatches couriered to your school address so your committee can verify fabric strength before ordering.
                 </span>
               </div>
 
@@ -177,14 +178,14 @@ export const BulkQuoteCalculator: React.FC<BulkQuoteCalculatorProps> = ({
                   className="inline-flex items-center gap-2 px-5 py-2.5 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-full transition-colors"
                 >
                   <Printer className="w-3.5 h-3.5" />
-                  Print / Save RFQ PDF
+                  Print / Save Estimate
                 </button>
                 <button
                   type="button"
                   onClick={onClose}
                   className="px-6 py-2.5 text-xs font-bold text-white bg-indigo-900 hover:bg-indigo-800 rounded-full transition-colors shadow-xs"
                 >
-                  Back to Catalog
+                  Back to Uniform Catalog
                 </button>
               </div>
             </div>
@@ -196,11 +197,11 @@ export const BulkQuoteCalculator: React.FC<BulkQuoteCalculatorProps> = ({
               <div className="lg:col-span-7 space-y-5">
                 <div className="flex items-center justify-between">
                   <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider">
-                    Requested Attire Styles ({quoteItems.length})
+                    Selected Uniform Items ({quoteItems.length})
                   </h3>
                   {quoteItems.length > 0 && (
                     <span className="text-xs font-semibold text-indigo-900 bg-indigo-50 px-3 py-1 rounded-full border border-indigo-200">
-                      Total: {totalGarments} units
+                      Total: {totalGarments} pieces
                     </span>
                   )}
                 </div>
@@ -208,7 +209,7 @@ export const BulkQuoteCalculator: React.FC<BulkQuoteCalculatorProps> = ({
                 {quoteItems.length === 0 ? (
                   <div className="p-8 rounded-[2rem] border-2 border-dashed border-slate-200 text-center space-y-3">
                     <p className="text-xs text-slate-500">
-                      Your RFQ basket is currently empty. Browse the catalog to add school, corporate, or healthcare attire, or choose from our popular models below.
+                      Your uniform list is empty right now. Choose school uniform items below or explore the catalog:
                     </p>
                     <div className="flex flex-wrap gap-2 justify-center pt-2">
                       {allProducts.slice(0, 4).map((p) => (
@@ -234,14 +235,19 @@ export const BulkQuoteCalculator: React.FC<BulkQuoteCalculatorProps> = ({
                         <div className="space-y-1">
                           <div className="flex items-center gap-2">
                             <span className="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full bg-slate-200 text-slate-700">
-                              {item.category}
+                              {item.category === 'school' ? 'Student' : 
+                               item.category === 'staff' ? 'Staff' : 
+                               item.category === 'healthcare' ? 'Healthcare' : 
+                               item.category === 'corporate' ? 'Corporate' : 
+                               item.category === 'hospitality' ? 'Hospitality' : 
+                               item.category === 'linen' ? 'Linen' : item.category}
                             </span>
                             <strong className="text-xs font-bold text-slate-900">
                               {item.uniformName}
                             </strong>
                           </div>
                           <div className="text-[11px] text-slate-500">
-                            Shade: <span className="font-semibold text-slate-700">{item.selectedColor}</span> • Grade: {item.selectedFabricGrade}
+                            Color: <span className="font-semibold text-slate-700">{item.selectedColor}</span>
                           </div>
                         </div>
 
@@ -276,21 +282,76 @@ export const BulkQuoteCalculator: React.FC<BulkQuoteCalculatorProps> = ({
                             type="button"
                             onClick={() => onRemoveItem(item.uniformId)}
                             className="p-2 text-slate-400 hover:text-red-600 rounded-full hover:bg-red-50 transition-colors"
-                            title="Remove from RFQ"
+                            title="Remove item"
                           >
                             <Trash2 className="w-4 h-4" />
                           </button>
                         </div>
                       </div>
                     ))}
+
+                    {/* Quick Add More Items Drawer */}
+                    <div className="pt-2 border-t border-slate-100 space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-bold text-slate-700 uppercase tracking-wide">
+                          + Add More Items To Estimate:
+                        </span>
+                        <div className="flex items-center gap-1 text-[10px] overflow-x-auto">
+                          {[
+                            { id: 'all', label: 'All' },
+                            { id: 'school', label: 'Students & Shoes' },
+                            { id: 'staff', label: 'Staff' },
+                            { id: 'healthcare', label: 'Healthcare' },
+                            { id: 'corporate', label: 'Corporate' },
+                            { id: 'hospitality', label: 'Hospitality' },
+                            { id: 'linen', label: 'Bed Linen' },
+                          ].map((cat) => (
+                            <button
+                              key={cat.id}
+                              type="button"
+                              onClick={() => setAddCategoryFilter(cat.id)}
+                              className={`px-2 py-0.5 rounded-full font-semibold transition-colors ${
+                                addCategoryFilter === cat.id
+                                  ? 'bg-indigo-900 text-white'
+                                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                              }`}
+                            >
+                              {cat.label}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="flex flex-wrap gap-1.5 max-h-32 overflow-y-auto p-1.5 bg-slate-50 rounded-2xl border border-slate-200">
+                        {allProducts
+                          .filter((p) => {
+                            if (addCategoryFilter === 'all') return true;
+                            return p.category === addCategoryFilter;
+                          })
+                          .filter((p) => !quoteItems.some((qi) => qi.uniformId === p.id))
+                          .slice(0, 16)
+                          .map((prod) => (
+                            <button
+                              key={prod.id}
+                              type="button"
+                              onClick={() => onAddItem(prod.id)}
+                              className="inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-medium bg-white hover:bg-indigo-50 hover:text-indigo-900 hover:border-indigo-300 text-slate-700 rounded-full border border-slate-200 transition-colors shadow-2xs"
+                            >
+                              <Plus className="w-3 h-3 text-indigo-600" />
+                              <span>{prod.name}</span>
+                            </button>
+                          ))}
+                      </div>
+                    </div>
+
                   </div>
                 )}
 
-                {/* Custom Institutional Options Checkboxes */}
+                {/* Custom School / Institutional Options Checkboxes */}
                 <div className="p-5 rounded-[2rem] bg-indigo-50/60 border border-indigo-200/80 space-y-3">
                   <div className="text-xs font-bold text-indigo-950 flex items-center gap-1.5 uppercase tracking-wide">
                     <Sparkles className="w-3.5 h-3.5 text-indigo-700" />
-                    <span>Institutional Customization Options</span>
+                    <span>Institutional Customization &amp; Finishing Options</span>
                   </div>
 
                   <div className="space-y-2.5">
@@ -301,7 +362,7 @@ export const BulkQuoteCalculator: React.FC<BulkQuoteCalculatorProps> = ({
                         onChange={(e) => setEmbroideryOption(e.target.checked)}
                         className="rounded text-indigo-800 focus:ring-indigo-500 w-4 h-4"
                       />
-                      <span>Direct computerized crest / logo embroidery (+$0.75/pc)</span>
+                      <span>School crest or logo computerized embroidery (+₹15 / piece)</span>
                     </label>
 
                     <label className="flex items-center gap-2.5 text-xs text-slate-700 cursor-pointer">
@@ -311,7 +372,7 @@ export const BulkQuoteCalculator: React.FC<BulkQuoteCalculatorProps> = ({
                         onChange={(e) => setCustomLabelsOption(e.target.checked)}
                         className="rounded text-indigo-800 focus:ring-indigo-500 w-4 h-4"
                       />
-                      <span>Custom institutional woven neck label &amp; student name tag (+$0.35/pc)</span>
+                      <span>Woven school neck tag &amp; student name label (+₹8 / piece)</span>
                     </label>
 
                     <label className="flex items-center gap-2.5 text-xs text-slate-700 cursor-pointer">
@@ -321,7 +382,7 @@ export const BulkQuoteCalculator: React.FC<BulkQuoteCalculatorProps> = ({
                         onChange={(e) => setIndividualPackaging(e.target.checked)}
                         className="rounded text-indigo-800 focus:ring-indigo-500 w-4 h-4"
                       />
-                      <span>Individual barcode polybag packaging by student/staff size (+$0.25/pc)</span>
+                      <span>Individual transparent packet packaging with size sticker (+₹5 / piece)</span>
                     </label>
 
                     <label className="flex items-center gap-2.5 text-xs text-slate-700 cursor-pointer">
@@ -332,7 +393,7 @@ export const BulkQuoteCalculator: React.FC<BulkQuoteCalculatorProps> = ({
                         className="rounded text-indigo-800 focus:ring-indigo-500 w-4 h-4"
                       />
                       <span className="font-semibold text-indigo-900">
-                        Include 48-Hour Pre-Production Sample Garment Courier (Complimentary)
+                        Include free cloth swatch kit sent by courier to your school (Free)
                       </span>
                     </label>
                   </div>
@@ -341,23 +402,23 @@ export const BulkQuoteCalculator: React.FC<BulkQuoteCalculatorProps> = ({
                 {/* Estimate Summary Box */}
                 <div className="p-5 rounded-[2rem] bg-slate-900 text-white space-y-2">
                   <div className="flex items-center justify-between text-xs">
-                    <span className="text-slate-400">Selected Discount Bracket:</span>
+                    <span className="text-slate-400">Applicable Discount Tier:</span>
                     <span className="font-bold text-emerald-400">{tierLabel}</span>
                   </div>
                   <div className="flex items-center justify-between text-xs">
-                    <span className="text-slate-400">Total Volume:</span>
-                    <span className="font-bold text-slate-200">{totalGarments} Garments</span>
+                    <span className="text-slate-400">Total Quantity:</span>
+                    <span className="font-bold text-slate-200">{totalGarments} Uniforms</span>
                   </div>
                   <div className="flex items-center justify-between pt-2 border-t border-slate-800">
                     <div>
-                      <span className="text-[10px] text-slate-400 block uppercase font-medium">Estimated Budget Bracket</span>
-                      <span className="text-xl font-extrabold text-white font-heading">
-                        ${Math.round(totalEstimate).toLocaleString()} <span className="text-xs font-normal text-slate-400">USD (CIF/FOB)</span>
+                      <span className="text-[10px] text-slate-400 block uppercase font-medium">Estimated Wholesale Cost</span>
+                      <span className="text-2xl font-extrabold text-white font-heading">
+                        ₹{Math.round(totalEstimate).toLocaleString('en-IN')} <span className="text-xs font-normal text-slate-400">INR (approx.)</span>
                       </span>
                     </div>
                     <div className="text-right">
-                      <span className="text-[10px] text-slate-400 block uppercase font-medium">Factory Lead Time</span>
-                      <span className="text-xs font-bold text-amber-400">14 – 21 Days</span>
+                      <span className="text-[10px] text-slate-400 block uppercase font-medium">Estimated Production &amp; Delivery</span>
+                      <span className="text-xs font-bold text-amber-400">12 – 18 Days</span>
                     </div>
                   </div>
                 </div>
@@ -368,26 +429,26 @@ export const BulkQuoteCalculator: React.FC<BulkQuoteCalculatorProps> = ({
                 <div className="flex items-center gap-2 pb-2 border-b border-slate-200">
                   <Building2 className="w-4 h-4 text-indigo-800" />
                   <h3 className="text-sm font-bold text-slate-900">
-                    Institutional Procurement Form
+                    School &amp; Order Inquiry Form
                   </h3>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-3.5 text-xs">
                   <div>
                     <label className="block text-[11px] font-semibold text-slate-700 mb-1">
-                      Organization / School / Hospital Name *
+                      School / College / Organization Name *
                     </label>
                     <input
                       type="text"
                       required
-                      placeholder="e.g. St. Xavier's Academy, Apollo Care..."
+                      placeholder="e.g. Saraswati Vidya Mandir, St. Mary High School..."
                       value={orgName}
                       onChange={(e) => setOrgName(e.target.value)}
-                      className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-full focus:ring-2 focus:ring-indigo-500 focus:outline-hidden"
+                      className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-full focus:ring-2 focus:ring-indigo-500 focus:outline-hidden text-base sm:text-xs"
                     />
                   </div>
 
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                     <div>
                       <label className="block text-[11px] font-semibold text-slate-700 mb-1">
                         Contact Person *
@@ -395,15 +456,15 @@ export const BulkQuoteCalculator: React.FC<BulkQuoteCalculatorProps> = ({
                       <input
                         type="text"
                         required
-                        placeholder="Full Name"
+                        placeholder="Principal / Trustee / Admin"
                         value={contactName}
                         onChange={(e) => setContactName(e.target.value)}
-                        className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-full focus:ring-2 focus:ring-indigo-500 focus:outline-hidden"
+                        className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-full focus:ring-2 focus:ring-indigo-500 focus:outline-hidden text-base sm:text-xs"
                       />
                     </div>
                     <div>
                       <label className="block text-[11px] font-semibold text-slate-700 mb-1">
-                        Phone / WhatsApp *
+                        Mobile / WhatsApp *
                       </label>
                       <input
                         type="tel"
@@ -411,65 +472,65 @@ export const BulkQuoteCalculator: React.FC<BulkQuoteCalculatorProps> = ({
                         placeholder="+91 98..."
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
-                        className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-full focus:ring-2 focus:ring-indigo-500 focus:outline-hidden"
+                        className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-full focus:ring-2 focus:ring-indigo-500 focus:outline-hidden text-base sm:text-xs"
                       />
                     </div>
                   </div>
 
                   <div>
                     <label className="block text-[11px] font-semibold text-slate-700 mb-1">
-                      Institutional Email Address *
+                      Email Address (Optional)
                     </label>
                     <input
                       type="email"
-                      required
-                      placeholder="procurement@institution.edu"
+                      placeholder="schooloffice@gmail.com"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-full focus:ring-2 focus:ring-indigo-500 focus:outline-hidden"
+                      className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-full focus:ring-2 focus:ring-indigo-500 focus:outline-hidden text-base sm:text-xs"
                     />
                   </div>
 
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                     <div>
                       <label className="block text-[11px] font-semibold text-slate-700 mb-1">
-                        Delivery City / State *
+                        District, State &amp; Pincode *
                       </label>
                       <input
                         type="text"
                         required
-                        placeholder="City, Country"
+                        placeholder="e.g. Satara, Maharashtra 415001"
                         value={city}
                         onChange={(e) => setCity(e.target.value)}
-                        className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-full focus:ring-2 focus:ring-indigo-500 focus:outline-hidden"
+                        className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-full focus:ring-2 focus:ring-indigo-500 focus:outline-hidden text-base sm:text-xs"
                       />
                     </div>
                     <div>
                       <label className="block text-[11px] font-semibold text-slate-700 mb-1">
-                        Required Delivery Timeline
+                        Required By Month
                       </label>
                       <select
                         value={timeline}
                         onChange={(e) => setTimeline(e.target.value)}
-                        className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-full focus:ring-2 focus:ring-indigo-500 focus:outline-hidden"
+                        className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-full focus:ring-2 focus:ring-indigo-500 focus:outline-hidden text-base sm:text-xs"
                       >
-                        <option>Rush (10-14 Days)</option>
-                        <option>Standard (3-4 Weeks)</option>
-                        <option>Next Academic Term (60 Days)</option>
+                        <option>Before School Reopens (June/July)</option>
+                        <option>Mid-Term Supply (October/November)</option>
+                        <option>Urgent Dispatch (Within 10-14 days)</option>
+                        <option>Planning for Next Academic Year</option>
                       </select>
                     </div>
                   </div>
 
                   <div>
                     <label className="block text-[11px] font-semibold text-slate-700 mb-1">
-                      Specific Fabric or Branding Notes (Optional)
+                      Uniform Details &amp; Notes (Optional)
                     </label>
                     <textarea
                       rows={2}
-                      placeholder="e.g., specific Pantone shade, customized tartan plaid, embroidery stitch count requirements..."
+                      placeholder="e.g. Classes 1 to 10, Navy Blue &amp; White check shirt, house T-shirts in Red, Blue, Green, Yellow..."
                       value={additionalNotes}
                       onChange={(e) => setAdditionalNotes(e.target.value)}
-                      className="w-full px-3.5 py-2 bg-white border border-slate-300 rounded-2xl focus:ring-2 focus:ring-indigo-500 focus:outline-hidden"
+                      className="w-full px-3.5 py-2 bg-white border border-slate-300 rounded-2xl focus:ring-2 focus:ring-indigo-500 focus:outline-hidden text-base sm:text-xs"
                     />
                   </div>
 
@@ -480,10 +541,10 @@ export const BulkQuoteCalculator: React.FC<BulkQuoteCalculatorProps> = ({
                       className="w-full flex items-center justify-center gap-2 py-3.5 px-5 bg-indigo-900 hover:bg-indigo-800 text-white font-bold rounded-full shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed active:scale-98"
                     >
                       <Send className="w-4 h-4 text-indigo-300" />
-                      <span>Generate &amp; Transmit Formal RFQ</span>
+                      <span>Submit Inquiry &amp; Request Free Cloth Samples</span>
                     </button>
                     <p className="text-[10px] text-slate-500 text-center mt-1.5">
-                      Guaranteed response within 4 hours by factory merchandisers.
+                      Direct phone / WhatsApp call from our uniform team within 4 working hours.
                     </p>
                   </div>
                 </form>

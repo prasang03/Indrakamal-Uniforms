@@ -43,24 +43,24 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-950/70 backdrop-blur-xs flex items-center justify-center p-4 sm:p-6 animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-950/70 backdrop-blur-xs flex items-center justify-center p-2.5 sm:p-6 animate-in fade-in duration-200">
       <div 
         id="product-detail-modal-container"
-        className="relative bg-white w-full max-w-4xl rounded-[2.5rem] shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[92vh]"
+        className="relative bg-white w-full max-w-4xl rounded-2xl sm:rounded-[2.5rem] shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[94vh] sm:max-h-[92vh]"
       >
         {/* Modal Header */}
-        <div className="flex items-center justify-between px-6 sm:px-8 py-5 border-b border-slate-100 bg-slate-50/90">
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-extrabold uppercase tracking-wider px-3 py-1 rounded-full bg-indigo-100 text-indigo-950 border border-indigo-200">
+        <div className="flex items-center justify-between px-4 sm:px-8 py-3.5 sm:py-5 border-b border-slate-100 bg-slate-50/90 shrink-0">
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="text-[10px] sm:text-xs font-extrabold uppercase tracking-wider px-2.5 sm:px-3 py-1 rounded-full bg-indigo-100 text-indigo-950 border border-indigo-200">
               {product.category} Division
             </span>
-            <span className="text-xs text-slate-500 font-medium">Style Code: {product.id.toUpperCase()}</span>
+            <span className="text-[11px] sm:text-xs text-slate-500 font-medium">Style Code: {product.id.toUpperCase()}</span>
           </div>
           <button
             type="button"
             id="btn-close-product-modal"
             onClick={onClose}
-            className="p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-200 rounded-full transition-colors"
+            className="p-1.5 sm:p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-200 rounded-full transition-colors shrink-0"
             aria-label="Close dialog"
           >
             <X className="w-5 h-5" />
@@ -68,7 +68,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
         </div>
 
         {/* Modal Scrollable Body */}
-        <div className="overflow-y-auto p-6 sm:p-8 space-y-6">
+        <div className="overflow-y-auto p-4 sm:p-8 space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
             
             {/* Left: Product Image & Color Selection (Col 1-5) */}
@@ -125,13 +125,13 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
               <div className="p-4 rounded-[2rem] bg-indigo-50/60 border border-indigo-200 text-xs space-y-1.5">
                 <div className="font-bold text-indigo-950 flex items-center gap-1.5">
                   <Award className="w-3.5 h-3.5 text-indigo-700" />
-                  <span>Institutional Tier Discounts</span>
+                  <span>Wholesale Quantity Discounts</span>
                 </div>
                 <div className="grid grid-cols-2 gap-1 text-[11px] text-slate-600 pt-1">
-                  <div>50 – 199 pcs: <strong className="text-slate-800">Standard MOQ</strong></div>
-                  <div>200 – 499 pcs: <strong className="text-emerald-700">8% Off</strong></div>
-                  <div>500 – 1,999 pcs: <strong className="text-emerald-700">15% Off</strong></div>
-                  <div>2,000+ pcs: <strong className="text-emerald-700">22% Off + Free Setup</strong></div>
+                  <div>50 – 99 pcs: <strong className="text-slate-800">Wholesale Base Rate</strong></div>
+                  <div>100 – 299 pcs: <strong className="text-emerald-700">5% Discount</strong></div>
+                  <div>300 – 999 pcs: <strong className="text-emerald-700">10% Discount</strong></div>
+                  <div>1,000+ pcs: <strong className="text-emerald-700">18% Off + Free Embroidery</strong></div>
                 </div>
               </div>
             </div>
@@ -143,7 +143,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                   {product.name}
                 </h2>
                 <p className="text-xs font-semibold text-slate-500 mt-0.5">
-                  Subcategory: {product.subcategory} • Fit Profile: {product.gender}
+                  Category: {product.category === 'school' ? 'School Uniform (Active Core)' : product.category === 'corporate' ? 'Corporate Attire (Upcoming)' : 'Healthcare Attire (Upcoming)'} • Fit: {product.gender}
                 </p>
                 <p className="text-sm text-slate-700 mt-3 leading-relaxed">
                   {product.description}
@@ -151,44 +151,44 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
               </div>
 
               {/* Tabs Navigation */}
-              <div className="flex items-center gap-2 border-b border-slate-200 pt-1">
+              <div className="flex items-center gap-2 sm:gap-4 border-b border-slate-200 pt-1 overflow-x-auto scrollbar-none pb-0.5">
                 <button
                   type="button"
                   id="tab-btn-specs"
                   onClick={() => setActiveTab('specs')}
-                  className={`pb-2.5 text-xs font-bold transition-colors relative ${
+                  className={`pb-2.5 text-xs font-bold transition-colors relative whitespace-nowrap shrink-0 ${
                     activeTab === 'specs'
                       ? 'text-indigo-900 border-b-2 border-indigo-800'
                       : 'text-slate-500 hover:text-slate-800'
                   }`}
                 >
-                  Textile Specs &amp; Testing
+                  Cloth &amp; Stitching Details
                 </button>
                 <button
                   type="button"
                   id="tab-btn-sizing"
                   onClick={() => setActiveTab('sizing')}
-                  className={`pb-2.5 text-xs font-bold transition-colors relative flex items-center gap-1.5 ${
+                  className={`pb-2.5 text-xs font-bold transition-colors relative flex items-center gap-1.5 whitespace-nowrap shrink-0 ${
                     activeTab === 'sizing'
                       ? 'text-indigo-900 border-b-2 border-indigo-800'
                       : 'text-slate-500 hover:text-slate-800'
                   }`}
                 >
                   <Ruler className="w-3.5 h-3.5" />
-                  <span>Size Measurements</span>
+                  <span>Size Chart</span>
                 </button>
                 <button
                   type="button"
                   id="tab-btn-customization"
                   onClick={() => setActiveTab('customization')}
-                  className={`pb-2.5 text-xs font-bold transition-colors relative flex items-center gap-1.5 ${
+                  className={`pb-2.5 text-xs font-bold transition-colors relative flex items-center gap-1.5 whitespace-nowrap shrink-0 ${
                     activeTab === 'customization'
                       ? 'text-indigo-900 border-b-2 border-indigo-800'
                       : 'text-slate-500 hover:text-slate-800'
                   }`}
                 >
                   <Scissors className="w-3.5 h-3.5" />
-                  <span>Embroidery &amp; Branding</span>
+                  <span>School Crest &amp; Logo</span>
                 </button>
               </div>
 
@@ -197,26 +197,26 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 <div className="space-y-4 animate-in fade-in duration-150">
                   <div className="grid grid-cols-2 gap-3 text-xs">
                     <div className="p-3.5 bg-slate-50 rounded-2xl border border-slate-200">
-                      <span className="text-slate-500 block text-[10px] uppercase font-semibold">Composition</span>
+                      <span className="text-slate-500 block text-[10px] uppercase font-semibold">Cloth Composition</span>
                       <strong className="text-slate-900 block mt-0.5">{product.fabricComposition}</strong>
                     </div>
                     <div className="p-3.5 bg-slate-50 rounded-2xl border border-slate-200">
-                      <span className="text-slate-500 block text-[10px] uppercase font-semibold">Fabric Density</span>
+                      <span className="text-slate-500 block text-[10px] uppercase font-semibold">Cloth Weight</span>
                       <strong className="text-slate-900 block mt-0.5">{product.gsm} GSM ({product.weave})</strong>
                     </div>
                     <div className="p-3.5 bg-slate-50 rounded-2xl border border-slate-200">
-                      <span className="text-slate-500 block text-[10px] uppercase font-semibold">Care &amp; Shrinkage</span>
-                      <strong className="text-slate-900 block mt-0.5">&lt; 1.8% residual shrinkage</strong>
+                      <span className="text-slate-500 block text-[10px] uppercase font-semibold">Washing &amp; Shrinkage</span>
+                      <strong className="text-slate-900 block mt-0.5">Pre-shrunk, machine &amp; hand washable</strong>
                     </div>
                     <div className="p-3.5 bg-slate-50 rounded-2xl border border-slate-200">
-                      <span className="text-slate-500 block text-[10px] uppercase font-semibold">Colorfastness</span>
-                      <strong className="text-slate-900 block mt-0.5">Grade 4.5 to ISO 105-C06</strong>
+                      <span className="text-slate-500 block text-[10px] uppercase font-semibold">Color Fastness</span>
+                      <strong className="text-slate-900 block mt-0.5">Tested color-fast, won&apos;t fade</strong>
                     </div>
                   </div>
 
                   <div>
                     <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider mb-2">
-                      Engineered Key Features
+                      Key Highlights
                     </h3>
                     <ul className="space-y-1.5">
                       {product.keyFeatures.map((feat, idx) => (
@@ -229,7 +229,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                   </div>
 
                   <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 text-xs">
-                    <div className="font-bold text-slate-900 mb-1">Recommended Institutional Applications:</div>
+                    <div className="font-bold text-slate-900 mb-1">Recommended Usage:</div>
                     <p className="text-slate-600">{product.suitableFor}</p>
                   </div>
                 </div>
@@ -240,7 +240,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 <div className="space-y-4 animate-in fade-in duration-150">
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-bold text-slate-800">
-                      Standard Institutional Size Grid
+                      Standard Indian Size Chart
                     </span>
                     <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-full text-xs">
                       <button
@@ -295,7 +295,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                         Available Sizes in Production: <strong>{product.sizes.join(', ')}</strong>
                       </p>
                       <p className="text-slate-500">
-                        *Indrakamal Uniforms provides full master size measuring kits sent directly to your campus or corporate office prior to mass production cutting.
+                        *Indrakamal Uniforms can courier sample trial sets of different sizes to your school so students can try them on before the bulk order is cut and stitched.
                       </p>
                     </div>
                   )}
@@ -303,7 +303,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                   <div className="p-3.5 bg-amber-50/70 border border-amber-200 rounded-2xl text-xs text-amber-900 flex items-start gap-2">
                     <HelpCircle className="w-4 h-4 shrink-0 mt-0.5 text-amber-700" />
                     <span>
-                      Need custom student or employee measurement logging? We provide Excel measurement roster templates and on-site master tailor sizing sessions.
+                      Need help choosing sizes for different age groups (Class 1 to Class 10)? Our team can guide you on standard age-wise Indian sizes.
                     </span>
                   </div>
                 </div>
@@ -312,8 +312,8 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
               {/* Tab 3: Customization */}
               {activeTab === 'customization' && (
                 <div className="space-y-4 animate-in fade-in duration-150">
-                  <div className="text-xs text-slate-600">
-                    Each uniform can be customized with your institution&apos;s crest, color trim, department piping, and personalized badges in our 64-head computerized embroidery facility.
+                  <div className="text-xs text-slate-600 leading-relaxed">
+                    We embroider your school crest, school name, and motto directly onto the chest pocket or collar with high-precision computerized embroidery machines.
                   </div>
 
                   <div className="space-y-2">
@@ -326,9 +326,9 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                   </div>
 
                   <div className="p-4 rounded-2xl bg-slate-900 text-white text-xs space-y-1">
-                    <div className="font-bold text-amber-300">Embroidery Precision Guarantee</div>
+                    <div className="font-bold text-amber-300">Clean Computerized Embroidery</div>
                     <p className="text-slate-300 text-[11px] leading-relaxed">
-                      All embroidery utilizes Madeira color-safe threads resistant to industrial bleaching and repeated school/hospital laundering cycles.
+                      We use color-fast embroidery threads that do not bleed onto white shirts or tear after rough playground play.
                     </p>
                   </div>
                 </div>
@@ -346,16 +346,16 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 Minimum Order Quantity
               </span>
               <span className="text-xs font-bold text-slate-800">
-                {product.moq} units / style
+                {product.moq} pieces / style
               </span>
             </div>
             <span className="text-slate-300">|</span>
             <div>
               <span className="text-[10px] font-semibold text-slate-400 block uppercase tracking-wider">
-                Production Lead Time
+                Production &amp; Dispatch
               </span>
               <span className="text-xs font-bold text-slate-800">
-                14 – 21 Days
+                12 – 18 Days
               </span>
             </div>
           </div>
@@ -385,12 +385,12 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
               {isInQuote ? (
                 <>
                   <Check className="w-4 h-4" />
-                  <span>Already in RFQ Basket</span>
+                  <span>Added to Estimate List</span>
                 </>
               ) : (
                 <>
                   <Plus className="w-4 h-4 text-indigo-300" />
-                  <span>Add to Institutional Quote</span>
+                  <span>Add to Price Estimator (₹)</span>
                 </>
               )}
             </button>

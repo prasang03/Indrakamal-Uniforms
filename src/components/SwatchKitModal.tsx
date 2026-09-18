@@ -34,30 +34,30 @@ export const SwatchKitModal: React.FC<SwatchKitModalProps> = ({ isOpen, onClose 
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-950/75 backdrop-blur-xs flex items-center justify-center p-4 sm:p-6 animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-950/75 backdrop-blur-xs flex items-center justify-center p-2.5 sm:p-6 animate-in fade-in duration-200">
       <div 
         id="swatch-kit-modal"
-        className="relative bg-white w-full max-w-xl rounded-[2.5rem] shadow-2xl border border-slate-200 overflow-hidden flex flex-col"
+        className="relative bg-white w-full max-w-xl rounded-2xl sm:rounded-[2.5rem] shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[94vh] sm:max-h-[92vh]"
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-6 sm:px-8 py-5 border-b border-slate-200 bg-slate-50/90">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-indigo-100 text-indigo-900 flex items-center justify-center">
-              <PackageCheck className="w-5 h-5 text-indigo-800" />
+        <div className="flex items-center justify-between px-4 sm:px-8 py-4 sm:py-5 border-b border-slate-200 bg-slate-50/90 shrink-0">
+          <div className="flex items-center gap-2.5 sm:gap-3">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl sm:rounded-2xl bg-indigo-100 text-indigo-900 flex items-center justify-center shrink-0">
+              <PackageCheck className="w-4 h-4 sm:w-5 sm:h-5 text-indigo-800" />
             </div>
             <div>
-              <h2 className="text-base font-extrabold text-slate-900 font-heading">
-                Request Physical Fabric Swatch Kit
+              <h2 className="text-sm sm:text-base font-extrabold text-slate-900 font-heading">
+                Request Free Cloth Sample Kit
               </h2>
-              <p className="text-[11px] text-slate-500">
-                Shipped free to verified schools, hospitals, and registered enterprises
+              <p className="text-[10px] sm:text-[11px] text-slate-500">
+                Couried free of cost to schools, institutions &amp; vidyalayas across India
               </p>
             </div>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-200 rounded-full transition-colors"
+            className="p-1.5 sm:p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-200 rounded-full transition-colors shrink-0"
             aria-label="Close modal"
           >
             <X className="w-5 h-5" />
@@ -65,21 +65,21 @@ export const SwatchKitModal: React.FC<SwatchKitModalProps> = ({ isOpen, onClose 
         </div>
 
         {/* Content */}
-        <div className="p-6 sm:p-8">
+        <div className="p-4 sm:p-8 overflow-y-auto">
           {isSubmitted ? (
             <div className="py-8 text-center space-y-4">
               <div className="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto">
                 <CheckCircle2 className="w-8 h-8" />
               </div>
               <h3 className="text-xl font-extrabold text-slate-900 font-heading">
-                Swatch Binder Dispatched for {formData.organizationName}!
+                Cloth Samples Dispatched for {formData.organizationName}!
               </h3>
               <p className="text-xs text-slate-600 leading-relaxed max-w-md mx-auto">
-                Your sample kit including physical fabric swatches, color cards, and embroidered crest samples will be couriered to <strong>{formData.city}</strong> via express delivery.
+                Your sample kit with original school uniform cloth swatches, shade cards, and stitching examples has been scheduled for dispatch to <strong>{formData.city}</strong>.
               </p>
               <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 text-xs inline-block text-left space-y-1">
-                <div>Courier Tracking Token: <strong className="font-mono text-indigo-900">{courierRef}</strong></div>
-                <div>Estimated Arrival: <strong>2 – 3 Business Days</strong></div>
+                <div>Parcel Reference Number: <strong className="font-mono text-indigo-900">{courierRef}</strong></div>
+                <div>Expected Courier Arrival: <strong>3 – 4 Days by Speed Post / Courier</strong></div>
               </div>
               <div className="pt-2">
                 <button
@@ -87,7 +87,7 @@ export const SwatchKitModal: React.FC<SwatchKitModalProps> = ({ isOpen, onClose 
                   onClick={onClose}
                   className="px-8 py-3 text-xs font-bold text-white bg-indigo-900 rounded-full hover:bg-indigo-800 transition-colors"
                 >
-                  Done
+                  Return to Website
                 </button>
               </div>
             </div>
@@ -96,45 +96,52 @@ export const SwatchKitModal: React.FC<SwatchKitModalProps> = ({ isOpen, onClose 
               <div className="p-3.5 rounded-2xl bg-indigo-50/80 border border-indigo-200/70 text-[11px] text-indigo-950 flex items-center gap-2.5">
                 <Sparkles className="w-4 h-4 text-indigo-600 shrink-0" />
                 <span>
-                  Kit includes: Oxford weave cuts, Poly-Viscose suit swatches, Silver-ion scrub samples, and color cards.
+                  Sample envelope contains: Real cloth pieces of school shirts, heavy trouser twill, pleated skirt checks, PT T-shirt fabric, and shade card.
                 </span>
               </div>
 
               {/* Sector selector */}
               <div>
                 <label className="block text-[11px] font-semibold text-slate-700 mb-1.5">
-                  Primary Sector of Interest *
+                  Select Sector of Interest *
                 </label>
-                <div className="grid grid-cols-4 gap-1.5">
-                  {(['school', 'corporate', 'healthcare', 'multiple'] as const).map((sec) => (
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5">
+                  {[
+                    { id: 'school', label: 'School Students' },
+                    { id: 'staff', label: 'School Staff & Faculty' },
+                    { id: 'healthcare', label: 'Healthcare & Bed Linen' },
+                    { id: 'corporate', label: 'Corporate Office' },
+                    { id: 'hospitality', label: 'Hospitality & Hotel Linen' },
+                    { id: 'linen', label: 'Hostel Bedding & Linen' },
+                  ].map((sec) => (
                     <button
-                      key={sec}
+                      key={sec.id}
                       type="button"
-                      onClick={() => setFormData({ ...formData, sector: sec })}
-                      className={`py-2 px-1.5 rounded-full text-xs font-semibold capitalize border text-center transition-all ${
-                        formData.sector === sec
+                      onClick={() => setFormData({ ...formData, sector: sec.id as any })}
+                      className={`py-2 px-2 rounded-xl text-xs font-semibold border text-center transition-all ${
+                        formData.sector === sec.id
                           ? 'bg-indigo-900 text-white border-indigo-900 shadow-xs'
                           : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50'
                       }`}
                     >
-                      {sec}
+                      {sec.label}
                     </button>
                   ))}
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="block text-[11px] font-semibold text-slate-700 mb-1">
-                    Institution / Company *
+                    School / Organization Name *
                   </label>
                   <input
                     type="text"
                     required
-                    placeholder="e.g. St. Xavier's International"
+                    placeholder="e.g. Saraswati Vidya Mandir"
                     value={formData.organizationName}
                     onChange={(e) => setFormData({ ...formData, organizationName: e.target.value })}
-                    className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-hidden"
+                    className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-hidden text-base sm:text-xs"
                   />
                 </div>
                 <div>
@@ -144,82 +151,81 @@ export const SwatchKitModal: React.FC<SwatchKitModalProps> = ({ isOpen, onClose 
                   <input
                     type="text"
                     required
-                    placeholder="Full Name"
+                    placeholder="Principal / Admin"
                     value={formData.fullName}
                     onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                    className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-hidden"
+                    className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-hidden text-base sm:text-xs"
                   />
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="block text-[11px] font-semibold text-slate-700 mb-1">
-                    Official Email *
+                    Email Address (Optional)
                   </label>
                   <input
                     type="email"
-                    required
-                    placeholder="procurement@domain.org"
+                    placeholder="schooloffice@gmail.com"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-hidden"
+                    className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-hidden text-base sm:text-xs"
                   />
                 </div>
                 <div>
                   <label className="block text-[11px] font-semibold text-slate-700 mb-1">
-                    Mobile / WhatsApp *
+                    Mobile / WhatsApp Number *
                   </label>
                   <input
                     type="tel"
                     required
-                    placeholder="+91..."
+                    placeholder="+91 98..."
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-hidden"
+                    className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-hidden text-base sm:text-xs"
                   />
                 </div>
               </div>
 
               <div>
                 <label className="block text-[11px] font-semibold text-slate-700 mb-1">
-                  Courier Shipping Address *
+                  Postal Delivery Address *
                 </label>
                 <textarea
                   rows={2}
                   required
-                  placeholder="Campus / Office street address, building number..."
+                  placeholder="Complete school / institution campus address, city, district..."
                   value={formData.shippingAddress}
                   onChange={(e) => setFormData({ ...formData, shippingAddress: e.target.value })}
-                  className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-hidden"
+                  className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-hidden text-base sm:text-xs"
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="block text-[11px] font-semibold text-slate-700 mb-1">
-                    City &amp; State *
+                    City, District &amp; State *
                   </label>
                   <input
                     type="text"
                     required
-                    placeholder="City, State"
+                    placeholder="e.g. Satara, Maharashtra"
                     value={formData.city}
                     onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-                    className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-hidden"
+                    className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-hidden text-base sm:text-xs"
                   />
                 </div>
                 <div>
                   <label className="block text-[11px] font-semibold text-slate-700 mb-1">
-                    Postal / PIN Code *
+                    6-digit PIN Code *
                   </label>
                   <input
                     type="text"
                     required
-                    placeholder="Postal Code"
+                    placeholder="e.g. 415001"
                     value={formData.pincodeOrZip}
                     onChange={(e) => setFormData({ ...formData, pincodeOrZip: e.target.value })}
-                    className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-hidden"
+                    className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-hidden text-base sm:text-xs"
                   />
                 </div>
               </div>
@@ -230,7 +236,7 @@ export const SwatchKitModal: React.FC<SwatchKitModalProps> = ({ isOpen, onClose 
                   className="w-full flex items-center justify-center gap-2 py-3.5 px-5 bg-indigo-900 hover:bg-indigo-800 text-white font-bold rounded-full shadow-md transition-all active:scale-98"
                 >
                   <Send className="w-4 h-4 text-indigo-300" />
-                  <span>Ship Sample Swatch Kit</span>
+                  <span>Send Me Free Cloth Samples by Post</span>
                 </button>
               </div>
             </form>

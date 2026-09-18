@@ -1,4 +1,11 @@
-export type UniformCategory = 'all' | 'school' | 'corporate' | 'healthcare';
+export type UniformCategory = 
+  | 'all' 
+  | 'school' 
+  | 'staff' 
+  | 'corporate' 
+  | 'healthcare' 
+  | 'hospitality' 
+  | 'linen';
 
 export type UniformGender = 'Unisex' | 'Men' | 'Women' | 'Junior';
 
@@ -18,7 +25,7 @@ export interface SizeMeasurement {
 export interface UniformItem {
   id: string;
   name: string;
-  category: 'school' | 'corporate' | 'healthcare';
+  category: 'school' | 'staff' | 'corporate' | 'healthcare' | 'hospitality' | 'linen';
   subcategory: string;
   gender: UniformGender;
   description: string;
@@ -52,7 +59,7 @@ export interface BulkQuoteItem {
 export interface SwatchKitRequest {
   fullName: string;
   organizationName: string;
-  sector: 'school' | 'corporate' | 'healthcare' | 'multiple';
+  sector: 'school' | 'staff' | 'corporate' | 'healthcare' | 'hospitality' | 'linen' | 'multiple';
   email: string;
   phone: string;
   shippingAddress: string;
