@@ -167,6 +167,11 @@ export const CatalogSection: React.FC<CatalogSectionProps> = ({
             src={item.imageUrl}
             alt={item.name}
             referrerPolicy="no-referrer"
+            onError={(e) => {
+              if (item.fallbackImageUrl && e.currentTarget.src !== item.fallbackImageUrl) {
+                e.currentTarget.src = item.fallbackImageUrl;
+              }
+            }}
             className="w-full h-full object-cover object-center group-hover:scale-104 transition-transform duration-500"
           />
 

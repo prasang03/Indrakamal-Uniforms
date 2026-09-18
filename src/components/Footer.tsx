@@ -167,10 +167,10 @@ export const Footer: React.FC<FooterProps> = ({
                   className="w-full text-left p-3 rounded-xl bg-slate-900 hover:bg-slate-850 border border-slate-800 hover:border-emerald-700/60 transition-colors group"
                 >
                   <div className="text-xs font-bold text-white group-hover:text-emerald-300 flex items-center justify-between">
-                    <span>Free Cloth Kit</span>
+                    <span>Free Sample Kit</span>
                     <ArrowUpRight className="w-3.5 h-3.5 text-emerald-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                   </div>
-                  <p className="text-[10px] text-slate-400 mt-1">Free swatch delivery by post</p>
+                  <p className="text-[10px] text-slate-400 mt-1">Free sample delivery by post</p>
                 </button>
 
                 <div className="pt-2 text-[11px] text-slate-400 space-y-1">

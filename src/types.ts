@@ -39,6 +39,7 @@ export interface UniformItem {
   moq: number;
   priceRangeEstimate: string;
   imageUrl: string;
+  fallbackImageUrl?: string;
   badge?: string;
   suitableFor: string;
   careInstructions: string[];

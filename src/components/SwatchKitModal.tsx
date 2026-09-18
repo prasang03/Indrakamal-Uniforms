@@ -28,7 +28,7 @@ export const SwatchKitModal: React.FC<SwatchKitModalProps> = ({ isOpen, onClose 
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const ref = `SWATCH-${Math.floor(100000 + Math.random() * 900000)}`;
+    const ref = `SAMPLE-${Math.floor(100000 + Math.random() * 900000)}`;
     setCourierRef(ref);
     setIsSubmitted(true);
   };
@@ -36,7 +36,7 @@ export const SwatchKitModal: React.FC<SwatchKitModalProps> = ({ isOpen, onClose 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-950/75 backdrop-blur-xs flex items-center justify-center p-2.5 sm:p-6 animate-in fade-in duration-200">
       <div 
-        id="swatch-kit-modal"
+        id="sample-kit-modal"
         className="relative bg-white w-full max-w-xl rounded-2xl sm:rounded-[2.5rem] shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[94vh] sm:max-h-[92vh]"
       >
         {/* Header */}
@@ -50,7 +50,7 @@ export const SwatchKitModal: React.FC<SwatchKitModalProps> = ({ isOpen, onClose 
                 Request Free Cloth Sample Kit
               </h2>
               <p className="text-[10px] sm:text-[11px] text-slate-500">
-                Couried free of cost to schools, institutions &amp; vidyalayas across India
+                Couried free of cost to schools, institutions &amp; organizations across India
               </p>
             </div>
           </div>
@@ -75,7 +75,7 @@ export const SwatchKitModal: React.FC<SwatchKitModalProps> = ({ isOpen, onClose 
                 Cloth Samples Dispatched for {formData.organizationName}!
               </h3>
               <p className="text-xs text-slate-600 leading-relaxed max-w-md mx-auto">
-                Your sample kit with original school uniform cloth swatches, shade cards, and stitching examples has been scheduled for dispatch to <strong>{formData.city}</strong>.
+                Your sample kit with original institutional uniform cloth samples, shade cards, and stitching examples has been scheduled for dispatch to <strong>{formData.city}</strong>.
               </p>
               <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 text-xs inline-block text-left space-y-1">
                 <div>Parcel Reference Number: <strong className="font-mono text-indigo-900">{courierRef}</strong></div>
@@ -96,7 +96,7 @@ export const SwatchKitModal: React.FC<SwatchKitModalProps> = ({ isOpen, onClose 
               <div className="p-3.5 rounded-2xl bg-indigo-50/80 border border-indigo-200/70 text-[11px] text-indigo-950 flex items-center gap-2.5">
                 <Sparkles className="w-4 h-4 text-indigo-600 shrink-0" />
                 <span>
-                  Sample envelope contains: Real cloth pieces of school shirts, heavy trouser twill, pleated skirt checks, PT T-shirt fabric, and shade card.
+                  Sample envelope contains: Real cloth samples of uniform shirts, heavy trouser twill, pleated skirt checks, PT sport polo fabric, and color shade card.
                 </span>
               </div>
 

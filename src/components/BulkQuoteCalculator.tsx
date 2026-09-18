@@ -167,7 +167,7 @@ export const BulkQuoteCalculator: React.FC<BulkQuoteCalculatorProps> = ({
               <div className="text-xs text-slate-600 bg-indigo-50 border border-indigo-200 p-4 rounded-2xl text-left flex items-start gap-2.5">
                 <Info className="w-4 h-4 text-indigo-700 shrink-0 mt-0.5" />
                 <span>
-                  Our team will call or WhatsApp you within <strong>4 hours</strong>. We will arrange free cloth swatches couriered to your school address so your committee can verify fabric strength before ordering.
+                  Our team will call or WhatsApp you within <strong>4 hours</strong>. We will arrange free physical samples couriered to your organization address so your committee can verify fabric quality and sizing before ordering.
                 </span>
               </div>
 
@@ -393,7 +393,7 @@ export const BulkQuoteCalculator: React.FC<BulkQuoteCalculatorProps> = ({
                         className="rounded text-indigo-800 focus:ring-indigo-500 w-4 h-4"
                       />
                       <span className="font-semibold text-indigo-900">
-                        Include free cloth swatch kit sent by courier to your school (Free)
+                        Include free cloth sample kit sent by courier to your address (Free)
                       </span>
                     </label>
                   </div>

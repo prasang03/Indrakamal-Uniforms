@@ -102,7 +102,7 @@ export const InstitutionalProductMatrix: React.FC<InstitutionalProductMatrixProp
               className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-3.5 py-2.5 sm:py-2 rounded-full text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-300 transition-colors"
             >
               <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-              <span>Sample Swatches</span>
+              <span>Free Samples</span>
             </button>
             <button
               type="button"
@@ -207,6 +207,12 @@ export const InstitutionalProductMatrix: React.FC<InstitutionalProductMatrixProp
                     <img
                       src={item.imageUrl}
                       alt={item.name}
+                      referrerPolicy="no-referrer"
+                      onError={(e) => {
+                        if (item.fallbackImageUrl && e.currentTarget.src !== item.fallbackImageUrl) {
+                          e.currentTarget.src = item.fallbackImageUrl;
+                        }
+                      }}
                       className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-300"
                       loading="lazy"
                     />
@@ -279,7 +285,7 @@ export const InstitutionalProductMatrix: React.FC<InstitutionalProductMatrixProp
 
         {/* Minimal Procurement Info Footnote */}
         <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-slate-500 border-t border-slate-100">
-          <span>Minimum Order Quantity (MOQ): Typically 30–50 units per pattern. Sample swatches provided on request.</span>
+          <span>Minimum Order Quantity (MOQ): Typically 30–50 units per pattern. Samples provided on request.</span>
           <a
             href="tel:+919302502587"
             className="text-indigo-900 font-semibold hover:underline"

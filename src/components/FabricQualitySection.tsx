@@ -45,7 +45,7 @@ export const FabricQualitySection: React.FC<FabricQualitySectionProps> = ({
             onClick={onOpenSwatchModal}
             className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-700 bg-white hover:bg-slate-100 border border-slate-300 transition-colors self-start sm:self-auto"
           >
-            <span>Request Fabric Swatches</span>
+            <span>Request Fabric Samples</span>
           </button>
         </div>
 

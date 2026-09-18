@@ -67,7 +67,7 @@ export const Hero: React.FC<HeroProps> = ({
               className="inline-flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 px-5 py-3 sm:py-2.5 rounded-full font-semibold text-xs sm:text-sm transition-all active:scale-98"
             >
               <Sparkles className="w-4 h-4 text-amber-400" />
-              <span>Request Fabric Swatches</span>
+              <span>Request Fabric Samples</span>
             </button>
 
             <button

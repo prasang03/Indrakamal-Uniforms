@@ -78,6 +78,11 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                   src={product.imageUrl}
                   alt={product.name}
                   referrerPolicy="no-referrer"
+                  onError={(e) => {
+                    if (product.fallbackImageUrl && e.currentTarget.src !== product.fallbackImageUrl) {
+                      e.currentTarget.src = product.fallbackImageUrl;
+                    }
+                  }}
                   className="w-full h-full object-cover object-center"
                 />
                 {product.badge && (
