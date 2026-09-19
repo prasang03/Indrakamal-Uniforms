@@ -177,8 +177,8 @@ export const CatalogSection: React.FC<CatalogSectionProps> = ({
             className="w-full h-full object-cover object-center group-hover:scale-104 transition-transform duration-500"
           />
 
-          {/* Gradient overlay for text legibility */}
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent opacity-80" />
+          {/* Subtle gradient overlay for badge legibility without dimming garment details */}
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/35 via-transparent to-transparent pointer-events-none" />
 
           {/* Top badging */}
           <div className="absolute top-3 left-3 right-3 flex items-center justify-between gap-2">
@@ -188,16 +188,18 @@ export const CatalogSection: React.FC<CatalogSectionProps> = ({
             </span>
 
             {item.badge && (
-              <span className="px-3 py-1 rounded-full text-[11px] font-bold bg-slate-900/90 text-amber-300 border border-amber-500/30 backdrop-blur-md">
+              <span className="px-3 py-1 rounded-full text-[11px] font-bold bg-slate-900/90 text-amber-300 border border-amber-500/30 backdrop-blur-md shadow-xs">
                 {item.badge}
               </span>
             )}
           </div>
 
           {/* Bottom image details: Subcategory & Gender */}
-          <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-xs text-white">
-            <span className="font-semibold drop-shadow-sm">{item.subcategory}</span>
-            <span className="px-2.5 py-0.5 rounded-full bg-slate-900/80 text-[10px] font-semibold backdrop-blur-xs">
+          <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-xs">
+            <span className="px-2.5 py-1 rounded-full bg-slate-900/85 text-white text-[11px] font-semibold backdrop-blur-md shadow-xs">
+              {item.subcategory}
+            </span>
+            <span className="px-2.5 py-1 rounded-full bg-white/90 text-slate-800 text-[11px] font-bold backdrop-blur-md shadow-xs border border-slate-200/50">
               Fit: {item.gender}
             </span>
           </div>

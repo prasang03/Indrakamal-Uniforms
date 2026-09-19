@@ -73,7 +73,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
             
             {/* Left: Product Image & Color Selection (Col 1-5) */}
             <div className="md:col-span-5 space-y-4">
-              <div className="relative aspect-4/5 rounded-[2rem] overflow-hidden bg-slate-100 border border-slate-200 shadow-xs">
+              <div className="relative aspect-4/3 rounded-[2rem] overflow-hidden bg-slate-100 border border-slate-200 shadow-xs">
                 <img
                   src={product.imageUrl}
                   alt={product.name}
