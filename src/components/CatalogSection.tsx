@@ -166,6 +166,8 @@ export const CatalogSection: React.FC<CatalogSectionProps> = ({
           <img
             src={item.imageUrl}
             alt={item.name}
+            loading="lazy"
+            decoding="async"
             referrerPolicy="no-referrer"
             onError={(e) => {
               if (item.fallbackImageUrl && e.currentTarget.src !== item.fallbackImageUrl) {

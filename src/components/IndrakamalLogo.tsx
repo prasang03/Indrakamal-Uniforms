@@ -34,10 +34,12 @@ export const IndrakamalLogo: React.FC<LogoProps> = ({
     >
       {/* Official Indrakamal Logo as shared */}
       <img
-        src="/logo.png"
+        src="/logo.webp"
         onError={(e) => {
           const img = e.currentTarget;
-          if (img.src.includes('logo.png')) {
+          if (img.src.includes('logo.webp')) {
+            img.src = '/logo.png';
+          } else if (img.src.includes('logo.png')) {
             img.src = '/logo.svg';
           }
         }}

@@ -77,6 +77,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 <img
                   src={product.imageUrl}
                   alt={product.name}
+                  decoding="async"
                   referrerPolicy="no-referrer"
                   onError={(e) => {
                     if (product.fallbackImageUrl && e.currentTarget.src !== product.fallbackImageUrl) {
@@ -147,8 +148,8 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 font-heading">
                   {product.name}
                 </h2>
-                <p className="text-xs font-semibold text-slate-500 mt-0.5">
-                  Category: {product.category === 'school' ? 'School Uniform (Active Core)' : product.category === 'corporate' ? 'Corporate Attire (Upcoming)' : 'Healthcare Attire (Upcoming)'} • Fit: {product.gender}
+                <p className="text-xs font-semibold text-slate-500 mt-0.5 capitalize">
+                  Category: {product.category === 'school' ? 'School Uniforms' : product.category === 'staff' ? 'School Staff & Faculty' : product.category === 'healthcare' ? 'Medical & Healthcare Attire' : product.category === 'corporate' ? 'Corporate & Security Uniforms' : product.category === 'hospitality' ? 'Hospitality Attire' : 'Institutional Bed Linen'} • Fit: {product.gender}
                 </p>
                 <p className="text-sm text-slate-700 mt-3 leading-relaxed">
                   {product.description}
