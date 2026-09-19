@@ -75,7 +75,7 @@ export const Hero: React.FC<HeroProps> = ({
               onClick={scrollToCatalog}
               className="inline-flex items-center justify-center gap-1.5 text-xs sm:text-sm font-semibold text-slate-300 hover:text-white px-3 py-2.5 sm:py-2 transition-colors"
             >
-              <span>View Products</span>
+              <span>Explore Supply Sectors</span>
               <ArrowDown className="w-3.5 h-3.5" />
             </button>
           </div>

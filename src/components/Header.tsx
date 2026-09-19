@@ -5,23 +5,15 @@ import {
   Phone, 
   Mail, 
   FileText, 
-  Layers, 
   Menu, 
   X, 
-  GraduationCap, 
-  Briefcase, 
-  Stethoscope, 
-  Award,
   Sparkles,
-  ShoppingBag,
-  Users,
-  UtensilsCrossed,
-  BedDouble
+  ShoppingBag
 } from 'lucide-react';
 
 interface HeaderProps {
-  activeCategory: UniformCategory;
-  onSelectCategory: (category: UniformCategory) => void;
+  activeCategory?: UniformCategory;
+  onSelectCategory?: (category: UniformCategory) => void;
   onOpenQuoteModal: () => void;
   onOpenSwatchModal: () => void;
   quoteItemCount: number;
@@ -29,22 +21,16 @@ interface HeaderProps {
 }
 
 export const Header: React.FC<HeaderProps> = ({
-  activeCategory,
-  onSelectCategory,
   onOpenQuoteModal,
   onOpenSwatchModal,
   quoteItemCount,
-  showCatalog = false,
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const navItems: { label: string; shortLabel: string; category: UniformCategory; icon: React.ReactNode }[] = [
-    { label: 'School Students & Shoes', shortLabel: 'School & Shoes', category: 'school', icon: <GraduationCap className="w-3.5 h-3.5" /> },
-    { label: 'Staff Uniforms', shortLabel: 'Staff Attire', category: 'staff', icon: <Users className="w-3.5 h-3.5" /> },
-    { label: 'Healthcare & Bed Linen', shortLabel: 'Healthcare', category: 'healthcare', icon: <Stethoscope className="w-3.5 h-3.5" /> },
-    { label: 'Hospitality & Linen', shortLabel: 'Hospitality', category: 'hospitality', icon: <UtensilsCrossed className="w-3.5 h-3.5" /> },
-    { label: 'Corporate Suiting', shortLabel: 'Corporate', category: 'corporate', icon: <Briefcase className="w-3.5 h-3.5" /> },
-    { label: 'Hostel Bedding & Linen', shortLabel: 'Hostel Bedding', category: 'linen', icon: <BedDouble className="w-3.5 h-3.5" /> },
+  const navLinks = [
+    { label: 'Supply Sectors', targetId: 'institutional-sectors' },
+    { label: 'Fabric Specifications', targetId: 'quality-standards' },
+    { label: 'Contact & Inquiries', targetId: 'footer-contact' },
   ];
 
   const scrollToSection = (id: string) => {
@@ -52,15 +38,6 @@ export const Header: React.FC<HeaderProps> = ({
     const elem = document.getElementById(id);
     if (elem) {
       elem.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
-  const handleCategoryClick = (category: UniformCategory) => {
-    onSelectCategory(category);
-    setMobileMenuOpen(false);
-    const sectorsElem = document.getElementById('institutional-sectors');
-    if (sectorsElem) {
-      sectorsElem.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
@@ -108,24 +85,16 @@ export const Header: React.FC<HeaderProps> = ({
             <IndrakamalLogo size="md" />
           </button>
 
-          {/* Desktop Nav Links - Supply Sectors */}
-          <nav className="hidden lg:flex items-center gap-1 xl:gap-1.5">
-            {navItems.map((item) => (
+          {/* Desktop Clean Site Navigation Links */}
+          <nav className="hidden lg:flex items-center gap-2 xl:gap-3">
+            {navLinks.map((link) => (
               <button
-                key={item.category}
+                key={link.targetId}
                 type="button"
-                onClick={() => handleCategoryClick(item.category)}
-                className={`inline-flex items-center gap-1.5 px-2.5 xl:px-3 py-1.5 rounded-full text-xs font-bold transition-all ${
-                  activeCategory === item.category
-                    ? 'bg-indigo-900 text-white shadow-2xs'
-                    : 'text-slate-600 hover:text-indigo-900 hover:bg-slate-100'
-                }`}
+                onClick={() => scrollToSection(link.targetId)}
+                className="px-3.5 py-2 rounded-full text-xs font-semibold text-slate-600 hover:text-indigo-950 hover:bg-slate-100 transition-colors"
               >
-                <span className={activeCategory === item.category ? 'text-indigo-300' : 'text-slate-400'}>
-                  {item.icon}
-                </span>
-                <span className="hidden xl:inline">{item.label}</span>
-                <span className="inline xl:hidden">{item.shortLabel}</span>
+                {link.label}
               </button>
             ))}
           </nav>
@@ -193,24 +162,17 @@ export const Header: React.FC<HeaderProps> = ({
         <div className="lg:hidden border-t border-slate-200 bg-white px-4 pt-3 pb-6 space-y-3 shadow-xl rounded-b-3xl">
           <div>
             <div className="text-xs font-bold text-slate-400 uppercase tracking-widest px-2 mb-2">
-              Institutional Supply Divisions
+              Website Navigation
             </div>
             <div className="grid grid-cols-1 gap-1.5">
-              {navItems.map((item) => (
+              {navLinks.map((link) => (
                 <button
-                  key={item.category}
+                  key={link.targetId}
                   type="button"
-                  onClick={() => handleCategoryClick(item.category)}
-                  className={`flex items-center gap-3 w-full px-4 py-3 rounded-2xl text-sm font-semibold text-left transition-colors ${
-                    activeCategory === item.category
-                      ? 'bg-indigo-900 text-white shadow-xs'
-                      : 'text-slate-700 hover:bg-slate-100'
-                  }`}
+                  onClick={() => scrollToSection(link.targetId)}
+                  className="flex items-center justify-between w-full px-4 py-3 rounded-2xl text-sm font-semibold text-slate-800 hover:bg-slate-100 transition-colors text-left"
                 >
-                  <span className={activeCategory === item.category ? 'text-indigo-300' : 'text-indigo-700'}>
-                    {item.icon}
-                  </span>
-                  <span>{item.label}</span>
+                  <span>{link.label}</span>
                 </button>
               ))}
             </div>

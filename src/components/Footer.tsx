@@ -33,7 +33,7 @@ export const Footer: React.FC<FooterProps> = ({
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-slate-100 pb-12 pt-6">
+    <footer id="footer-contact" className="bg-slate-100 pb-12 pt-6">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Main Footer Container */}
