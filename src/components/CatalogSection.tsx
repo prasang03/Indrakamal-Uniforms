@@ -87,8 +87,12 @@ export const CatalogSection: React.FC<CatalogSectionProps> = ({
     return filteredItems.filter((i) => i.category === 'school');
   }, [filteredItems]);
 
+  const staffItems = useMemo(() => {
+    return filteredItems.filter((i) => i.category === 'staff');
+  }, [filteredItems]);
+
   const upcomingItems = useMemo(() => {
-    return filteredItems.filter((i) => i.category !== 'school');
+    return filteredItems.filter((i) => i.category !== 'school' && i.category !== 'staff');
   }, [filteredItems]);
 
   const getCategoryTheme = (cat: string) => {
@@ -162,7 +166,10 @@ export const CatalogSection: React.FC<CatalogSectionProps> = ({
         className="group bg-white rounded-[2rem] border border-slate-200 hover:border-indigo-300 hover:shadow-lg transition-all duration-300 flex flex-col overflow-hidden"
       >
         {/* Card Image Stage */}
-        <div className="relative aspect-4/3 bg-slate-100 overflow-hidden">
+        <div 
+          onClick={() => onSelectProduct(item)}
+          className="relative aspect-4/3 bg-white border-b border-slate-100 overflow-hidden cursor-pointer flex items-center justify-center"
+        >
           <img
             src={item.imageUrl}
             alt={item.name}
@@ -174,40 +181,38 @@ export const CatalogSection: React.FC<CatalogSectionProps> = ({
                 e.currentTarget.src = item.fallbackImageUrl;
               }
             }}
-            className="w-full h-full object-cover object-center group-hover:scale-104 transition-transform duration-500"
+            className="w-full h-full object-contain p-1.5 sm:p-2 bg-white object-center group-hover:scale-[1.02] transition-transform duration-300"
           />
 
-          {/* Subtle gradient overlay for badge legibility without dimming garment details */}
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/35 via-transparent to-transparent pointer-events-none" />
-
           {/* Top badging */}
-          <div className="absolute top-3 left-3 right-3 flex items-center justify-between gap-2">
-            <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold border backdrop-blur-md shadow-xs bg-white/95 ${theme.badgeBg}`}>
+          <div className="absolute top-2.5 left-2.5 right-2.5 flex items-center justify-between gap-2 pointer-events-none">
+            <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold border backdrop-blur-md shadow-2xs bg-white/95 ${theme.badgeBg}`}>
               {theme.icon}
               <span className="capitalize">{item.category}</span>
             </span>
 
             {item.badge && (
-              <span className="px-3 py-1 rounded-full text-[11px] font-bold bg-slate-900/90 text-amber-300 border border-amber-500/30 backdrop-blur-md shadow-xs">
+              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-900/90 text-amber-300 border border-amber-500/30 backdrop-blur-md shadow-2xs">
                 {item.badge}
               </span>
             )}
-          </div>
-
-          {/* Bottom image details: Subcategory & Gender */}
-          <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-xs">
-            <span className="px-2.5 py-1 rounded-full bg-slate-900/85 text-white text-[11px] font-semibold backdrop-blur-md shadow-xs">
-              {item.subcategory}
-            </span>
-            <span className="px-2.5 py-1 rounded-full bg-white/90 text-slate-800 text-[11px] font-bold backdrop-blur-md shadow-xs border border-slate-200/50">
-              Fit: {item.gender}
-            </span>
           </div>
         </div>
 
         {/* Card Content */}
         <div className="p-5 sm:p-6 flex-1 flex flex-col justify-between space-y-4">
           <div>
+            {/* Subcategory & Fit Tag */}
+            <div className="flex items-center gap-2 mb-2">
+              <span className="px-2.5 py-0.5 rounded-md bg-slate-100 text-slate-700 text-[11px] font-bold">
+                {item.subcategory}
+              </span>
+              <span className="text-[11px] font-medium text-slate-400">•</span>
+              <span className="text-[11px] font-semibold text-slate-600">
+                Fit: {item.gender}
+              </span>
+            </div>
+
             {/* Name */}
             <h3 
               onClick={() => onSelectProduct(item)}
@@ -350,7 +355,7 @@ export const CatalogSection: React.FC<CatalogSectionProps> = ({
 
         {/* Top Controls: Primary Division Tabs - Bento Pill Style */}
         <div className="bg-white p-1.5 sm:p-2 rounded-2xl sm:rounded-[2rem] border border-slate-200 shadow-xs mb-6">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-1 sm:gap-1.5">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-1 sm:gap-1.5">
             <button
               type="button"
               id="cat-tab-school"
@@ -370,6 +375,28 @@ export const CatalogSection: React.FC<CatalogSectionProps> = ({
                 activeCategory === 'school' ? 'bg-indigo-700 text-white' : 'bg-slate-200 text-slate-700'
               }`}>
                 {counts.school}
+              </span>
+            </button>
+
+            <button
+              type="button"
+              id="cat-tab-staff"
+              onClick={() => {
+                onSelectCategory('staff');
+                setSelectedSubcategory('all');
+              }}
+              className={`flex items-center justify-center gap-1.5 sm:gap-2 px-2.5 sm:px-4 py-2.5 sm:py-3 rounded-full text-xs sm:text-sm font-bold uppercase tracking-wider transition-all ${
+                activeCategory === 'staff'
+                  ? 'bg-purple-900 text-white shadow-xs'
+                  : 'text-slate-700 hover:text-slate-900 hover:bg-purple-50/70'
+              }`}
+            >
+              <Users className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-purple-300 shrink-0" />
+              <span className="truncate">Staff <span className="hidden xs:inline">Attire</span></span>
+              <span className={`px-1.5 sm:px-2 py-0.5 rounded-full text-[9px] sm:text-[10px] ${
+                activeCategory === 'staff' ? 'bg-purple-700 text-white' : 'bg-slate-200 text-slate-700'
+              }`}>
+                {counts.staff}
               </span>
             </button>
 
@@ -583,7 +610,40 @@ export const CatalogSection: React.FC<CatalogSectionProps> = ({
               </div>
             )}
 
-            {/* 2. Upcoming Expansion Lines (Corporate & Healthcare) - BELOW SCHOOL UNIFORMS */}
+            {/* 2. School Staff & Faculty Attire - DEDICATED SECTION */}
+            {staffItems.length > 0 && (
+              <div id="staff-uniforms-section" className="pt-4">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 mb-6 border-b border-slate-200">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-2xl bg-purple-900 text-white flex items-center justify-center shadow-xs">
+                      <Users className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <div className="flex flex-wrap items-center gap-2">
+                        <h3 className="text-lg sm:text-xl font-extrabold text-slate-900 font-heading">
+                          School Staff &amp; Faculty Uniforms
+                        </h3>
+                        <span className="px-3 py-0.5 rounded-full text-[10px] font-bold bg-purple-100 text-purple-900 border border-purple-200">
+                          Teacher Sarees, Lab Coats &amp; Support Attire
+                        </span>
+                      </div>
+                      <p className="text-xs text-slate-500 mt-0.5">
+                        Dignified teacher formals, science lab faculty coats, Modi Sadri waistcoats, and campus support staff uniforms.
+                      </p>
+                    </div>
+                  </div>
+                  <span className="text-xs font-bold text-purple-900 bg-purple-50 px-3.5 py-1.5 rounded-full border border-purple-200 shrink-0">
+                    {staffItems.length} Staff Styles
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {staffItems.map((item) => renderProductCard(item))}
+                </div>
+              </div>
+            )}
+
+            {/* 3. Upcoming Expansion Lines (Corporate & Healthcare) - BELOW SCHOOL UNIFORMS */}
             {upcomingItems.length > 0 && (
               <div id="upcoming-expansion-section" className="pt-4">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 mb-6 border-b border-slate-200">
@@ -635,6 +695,32 @@ export const CatalogSection: React.FC<CatalogSectionProps> = ({
                   </div>
                 </div>
                 <span className="text-xs font-bold text-indigo-900 bg-indigo-50 px-3 py-1 rounded-full border border-indigo-200">
+                  {filteredItems.length} Products
+                </span>
+              </div>
+            )}
+
+            {activeCategory === 'staff' && (
+              <div className="flex flex-wrap items-center justify-between gap-3 pb-4 mb-6 border-b border-slate-200">
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-2xl bg-purple-900 text-white flex items-center justify-center shadow-xs">
+                    <Users className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <h3 className="text-lg font-extrabold text-slate-900 font-heading">
+                        School Staff &amp; Faculty Uniforms
+                      </h3>
+                      <span className="text-[10px] font-bold text-purple-900 bg-purple-100 px-2.5 py-0.5 rounded-full uppercase">
+                        Academic Institutions
+                      </span>
+                    </div>
+                    <p className="text-xs text-slate-500">
+                      Teacher sarees, faculty lab coats, Nehru waistcoats, formal sets, and campus support staff uniforms.
+                    </p>
+                  </div>
+                </div>
+                <span className="text-xs font-bold text-purple-900 bg-purple-50 px-3 py-1 rounded-full border border-purple-200">
                   {filteredItems.length} Products
                 </span>
               </div>

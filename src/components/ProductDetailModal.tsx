@@ -11,7 +11,8 @@ import {
   Scissors, 
   Truck, 
   Award,
-  Layers
+  Layers,
+  Maximize2
 } from 'lucide-react';
 
 interface ProductDetailModalProps {
@@ -32,6 +33,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
   const [selectedColor, setSelectedColor] = useState<string>(product.colorOptions[0]?.name || '');
   const [measurementUnit, setMeasurementUnit] = useState<'inches' | 'cm'>('inches');
   const [activeTab, setActiveTab] = useState<'specs' | 'sizing' | 'customization'>('specs');
+  const [isZoomed, setIsZoomed] = useState<boolean>(false);
 
   const unitMultiplier = measurementUnit === 'cm' ? 2.54 : 1;
 
@@ -73,7 +75,11 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
             
             {/* Left: Product Image & Color Selection (Col 1-5) */}
             <div className="md:col-span-5 space-y-4">
-              <div className="relative aspect-4/3 rounded-[2rem] overflow-hidden bg-slate-100 border border-slate-200 shadow-xs">
+              <div 
+                onClick={() => setIsZoomed(true)}
+                className="relative aspect-4/3 rounded-2xl sm:rounded-[2rem] overflow-hidden bg-white border border-slate-200 shadow-xs flex items-center justify-center p-2 group cursor-zoom-in"
+                title="Click to expand high-resolution graphic"
+              >
                 <img
                   src={product.imageUrl}
                   alt={product.name}
@@ -84,13 +90,23 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                       e.currentTarget.src = product.fallbackImageUrl;
                     }
                   }}
-                  className="w-full h-full object-cover object-center"
+                  className="w-full h-full object-contain object-center transition-transform duration-300 group-hover:scale-[1.02]"
                 />
+                
                 {product.badge && (
                   <div className="absolute top-3 left-3 px-3 py-1 rounded-full text-[11px] font-bold bg-slate-900 text-amber-300 border border-amber-400/30">
                     {product.badge}
                   </div>
                 )}
+
+                <button
+                  type="button"
+                  aria-label="Enlarge infographic"
+                  className="absolute bottom-3 right-3 p-2 rounded-full bg-slate-900/80 text-white hover:bg-slate-900 shadow-md backdrop-blur-xs flex items-center gap-1.5 text-xs font-semibold opacity-90 group-hover:opacity-100 transition-opacity"
+                >
+                  <Maximize2 className="w-3.5 h-3.5" />
+                  <span className="text-[11px] pr-1">Enlarge</span>
+                </button>
               </div>
 
               {/* Color Shade Swatches */}
@@ -404,6 +420,33 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
         </div>
 
       </div>
+
+      {/* Lightbox / High-Res Zoom Overlay */}
+      {isZoomed && (
+        <div 
+          onClick={() => setIsZoomed(false)}
+          className="fixed inset-0 z-60 bg-black/90 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 cursor-zoom-out animate-in fade-in duration-200"
+        >
+          <button
+            type="button"
+            onClick={() => setIsZoomed(false)}
+            className="absolute top-4 right-4 w-11 h-11 rounded-full bg-white/20 hover:bg-white/30 text-white flex items-center justify-center transition-colors shadow-lg z-70"
+            aria-label="Close zoomed view"
+          >
+            <X className="w-6 h-6" />
+          </button>
+          <div 
+            onClick={(e) => e.stopPropagation()}
+            className="relative max-w-5xl max-h-[90vh] bg-white rounded-2xl overflow-hidden shadow-2xl p-2 sm:p-4 flex items-center justify-center"
+          >
+            <img
+              src={product.imageUrl}
+              alt={product.name}
+              className="max-h-[82vh] max-w-full object-contain rounded-lg"
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

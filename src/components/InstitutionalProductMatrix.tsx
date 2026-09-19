@@ -203,7 +203,7 @@ export const InstitutionalProductMatrix: React.FC<InstitutionalProductMatrixProp
                   key={item.id}
                   className="bg-white rounded-xl border border-slate-200 hover:border-slate-300 hover:shadow-sm transition-all flex flex-col justify-between overflow-hidden group"
                 >
-                  <div className="relative aspect-4/3 bg-slate-100 overflow-hidden">
+                  <div className="relative aspect-4/3 bg-white border-b border-slate-100 overflow-hidden flex items-center justify-center">
                     <img
                       src={item.imageUrl}
                       alt={item.name}
@@ -213,7 +213,7 @@ export const InstitutionalProductMatrix: React.FC<InstitutionalProductMatrixProp
                           e.currentTarget.src = item.fallbackImageUrl;
                         }
                       }}
-                      className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-300"
+                      className="w-full h-full object-contain p-1.5 object-center group-hover:scale-103 transition-transform duration-300"
                       loading="lazy"
                     />
                     {item.badge && (
