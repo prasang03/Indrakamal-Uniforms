@@ -19,12 +19,14 @@ interface FooterProps {
   onSelectCategory: (category: UniformCategory) => void;
   onOpenQuoteModal: () => void;
   onOpenSwatchModal: () => void;
+  onOpenInquiryModal?: () => void;
 }
 
 export const Footer: React.FC<FooterProps> = ({
   onSelectCategory,
   onOpenQuoteModal,
   onOpenSwatchModal,
+  onOpenInquiryModal,
 }) => {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -230,6 +232,16 @@ export const Footer: React.FC<FooterProps> = ({
                     <Mail className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
                     <span className="truncate">info@indrakamal.in</span>
                   </a>
+                  {onOpenInquiryModal && (
+                    <button
+                      type="button"
+                      onClick={onOpenInquiryModal}
+                      className="mt-2 w-full inline-flex items-center justify-center gap-1.5 py-2 px-3 text-xs font-bold text-slate-950 bg-amber-400 hover:bg-amber-300 rounded-full transition-colors shadow-xs"
+                    >
+                      <Mail className="w-3.5 h-3.5 text-slate-950" />
+                      <span>Open Inquiry Form</span>
+                    </button>
+                  )}
                 </div>
 
                 {/* Supply Hub */}

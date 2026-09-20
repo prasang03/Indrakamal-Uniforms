@@ -16,6 +16,7 @@ interface HeaderProps {
   onSelectCategory?: (category: UniformCategory) => void;
   onOpenQuoteModal: () => void;
   onOpenSwatchModal: () => void;
+  onOpenInquiryModal?: () => void;
   quoteItemCount: number;
   showCatalog?: boolean;
 }
@@ -23,6 +24,7 @@ interface HeaderProps {
 export const Header: React.FC<HeaderProps> = ({
   onOpenQuoteModal,
   onOpenSwatchModal,
+  onOpenInquiryModal,
   quoteItemCount,
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -32,6 +34,15 @@ export const Header: React.FC<HeaderProps> = ({
     { label: 'Fabric Specifications', targetId: 'quality-standards' },
     { label: 'Contact & Inquiries', targetId: 'footer-contact' },
   ];
+
+  const handleNavClick = (targetId: string) => {
+    setMobileMenuOpen(false);
+    if (targetId === 'footer-contact' && onOpenInquiryModal) {
+      onOpenInquiryModal();
+    } else {
+      scrollToSection(targetId);
+    }
+  };
 
   const scrollToSection = (id: string) => {
     setMobileMenuOpen(false);
@@ -91,7 +102,7 @@ export const Header: React.FC<HeaderProps> = ({
               <button
                 key={link.targetId}
                 type="button"
-                onClick={() => scrollToSection(link.targetId)}
+                onClick={() => handleNavClick(link.targetId)}
                 className="px-3.5 py-2 rounded-full text-xs font-semibold text-slate-600 hover:text-indigo-950 hover:bg-slate-100 transition-colors"
               >
                 {link.label}
@@ -101,6 +112,18 @@ export const Header: React.FC<HeaderProps> = ({
 
           {/* Action CTAs - Bento Pill Buttons */}
           <div className="hidden sm:flex items-center gap-2 sm:gap-2.5 shrink-0">
+            {onOpenInquiryModal && (
+              <button
+                type="button"
+                id="header-btn-inquiry-modal"
+                onClick={onOpenInquiryModal}
+                className="inline-flex items-center gap-1.5 px-3 sm:px-3.5 py-2 text-xs font-bold text-slate-700 bg-white hover:bg-slate-50 border border-slate-300 rounded-full shadow-xs hover:border-slate-400 transition-all active:scale-98 whitespace-nowrap"
+              >
+                <Mail className="w-3.5 h-3.5 text-indigo-700" />
+                <span>Inquiry Form</span>
+              </button>
+            )}
+
             <button
               type="button"
               id="header-btn-swatch-kit"
@@ -169,7 +192,7 @@ export const Header: React.FC<HeaderProps> = ({
                 <button
                   key={link.targetId}
                   type="button"
-                  onClick={() => scrollToSection(link.targetId)}
+                  onClick={() => handleNavClick(link.targetId)}
                   className="flex items-center justify-between w-full px-4 py-3 rounded-2xl text-sm font-semibold text-slate-800 hover:bg-slate-100 transition-colors text-left"
                 >
                   <span>{link.label}</span>
@@ -179,6 +202,19 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
 
           <div className="pt-3 border-t border-slate-100 space-y-2">
+            {onOpenInquiryModal && (
+              <button
+                type="button"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  onOpenInquiryModal();
+                }}
+                className="flex items-center justify-center gap-2 w-full py-3 px-4 text-xs font-bold text-indigo-950 bg-amber-400 hover:bg-amber-300 rounded-full shadow-xs"
+              >
+                <Mail className="w-4 h-4 text-indigo-950" />
+                Submit Institutional Inquiry Form
+              </button>
+            )}
             <button
               type="button"
               onClick={() => {

@@ -13,6 +13,7 @@ import { CatalogSection } from './components/CatalogSection';
 import { FabricQualitySection } from './components/FabricQualitySection';
 import { ProductDetailModal } from './components/ProductDetailModal';
 import { BulkQuoteCalculator } from './components/BulkQuoteCalculator';
+import { InquiryModal, AttachedQuoteData } from './components/InquiryModal';
 import { SwatchKitModal } from './components/SwatchKitModal';
 import { FloatingWhatsApp } from './components/FloatingWhatsApp';
 import { Footer } from './components/Footer';
@@ -22,7 +23,14 @@ export default function App() {
   const [activeCategory, setActiveCategory] = useState<UniformCategory>('all');
   const [selectedProduct, setSelectedProduct] = useState<UniformItem | null>(null);
   const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
+  const [isInquiryModalOpen, setIsInquiryModalOpen] = useState(false);
+  const [attachedQuoteForInquiry, setAttachedQuoteForInquiry] = useState<AttachedQuoteData | null>(null);
   const [isSwatchModalOpen, setIsSwatchModalOpen] = useState(false);
+
+  const handleOpenInquiryModal = (quoteData?: AttachedQuoteData) => {
+    setAttachedQuoteForInquiry(quoteData || null);
+    setIsInquiryModalOpen(true);
+  };
 
   // Initial demo items in estimate basket to let school administrators immediately explore the price calculator
   const [quoteItems, setQuoteItems] = useState<BulkQuoteItem[]>([
@@ -124,6 +132,7 @@ export default function App() {
         onSelectCategory={setActiveCategory}
         onOpenQuoteModal={() => setIsQuoteModalOpen(true)}
         onOpenSwatchModal={() => setIsSwatchModalOpen(true)}
+        onOpenInquiryModal={() => handleOpenInquiryModal()}
         quoteItemCount={quoteItems.length}
         showCatalog={SHOW_CATALOG}
       />
@@ -134,6 +143,7 @@ export default function App() {
           onSelectCategory={setActiveCategory}
           onOpenQuoteModal={() => setIsQuoteModalOpen(true)}
           onOpenSwatchModal={() => setIsSwatchModalOpen(true)}
+          onOpenInquiryModal={() => handleOpenInquiryModal()}
           showCatalog={SHOW_CATALOG}
         />
 
@@ -178,6 +188,7 @@ export default function App() {
         }}
         onOpenQuoteModal={() => setIsQuoteModalOpen(true)}
         onOpenSwatchModal={() => setIsSwatchModalOpen(true)}
+        onOpenInquiryModal={() => handleOpenInquiryModal()}
       />
 
       {/* Product Detail & Sizing Modal */}
@@ -198,8 +209,20 @@ export default function App() {
           onRemoveItem={handleRemoveItem}
           onAddItem={handleAddItemById}
           onClose={() => setIsQuoteModalOpen(false)}
+          onOpenInquiryForm={(quoteData) => handleOpenInquiryModal(quoteData)}
         />
       )}
+
+      {/* Dedicated Institutional Inquiry & RFQ Form Modal */}
+      <InquiryModal
+        isOpen={isInquiryModalOpen}
+        onClose={() => setIsInquiryModalOpen(false)}
+        onOpenCalculator={() => {
+          setIsInquiryModalOpen(false);
+          setIsQuoteModalOpen(true);
+        }}
+        attachedQuote={attachedQuoteForInquiry}
+      />
 
       {/* Complimentary Fabric Swatch Binder Modal */}
       <SwatchKitModal

@@ -115,3 +115,66 @@ export async function sendSampleKitInquiry(data: SampleKitPayload): Promise<{ su
     return { success: false, error: message };
   }
 }
+
+export interface GeneralInquiryPayload {
+  reference: string;
+  organization: string;
+  contactPerson: string;
+  role?: string;
+  phone: string;
+  email?: string;
+  location: string;
+  sector: string;
+  approxQuantity?: string;
+  requirements: string;
+  timeline: string;
+  attachedQuote?: {
+    totalGarments: number;
+    estimatedTotal: string;
+    itemsSummary: string;
+  };
+}
+
+export async function sendGeneralInquiry(data: GeneralInquiryPayload): Promise<{ success: boolean; error?: string }> {
+  try {
+    const payload: Record<string, string> = {
+      _subject: `[Institutional Inquiry] ${data.organization || data.contactPerson} (${data.reference})`,
+      _template: 'table',
+      _captcha: 'false',
+      'Inquiry Type': 'Direct Institutional Inquiry / RFQ',
+      'Inquiry Reference': data.reference,
+      'Organization / School': data.organization,
+      'Contact Person': data.contactPerson + (data.role ? ` (${data.role})` : ''),
+      'Phone / WhatsApp': data.phone,
+      'Email Address': data.email || 'Not provided',
+      'Location / State': data.location,
+      'Sector of Interest': data.sector,
+      'Estimated Quantity': data.approxQuantity || 'Not specified',
+      'Uniform Requirements / Query': data.requirements,
+      'Delivery Timeline': data.timeline,
+      'Attached Calculator Estimate': data.attachedQuote 
+        ? `${data.attachedQuote.totalGarments} items | Total: ${data.attachedQuote.estimatedTotal}\n\n${data.attachedQuote.itemsSummary}`
+        : 'No live calculator estimate attached',
+      'Submission Timestamp': new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }) + ' IST'
+    };
+
+    const response = await fetch(FORM_ENDPOINT, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    });
+
+    if (!response.ok) {
+      const errData = await response.json().catch(() => ({}));
+      return { success: false, error: errData.message || `Server returned status ${response.status}` };
+    }
+
+    return { success: true };
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : 'Network error';
+    return { success: false, error: message };
+  }
+}

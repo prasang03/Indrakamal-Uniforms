@@ -8,13 +8,15 @@ import {
   GraduationCap,
   Users,
   Stethoscope,
-  BedDouble
+  BedDouble,
+  Mail
 } from 'lucide-react';
 
 interface HeroProps {
   onSelectCategory: (category: UniformCategory) => void;
   onOpenQuoteModal: () => void;
   onOpenSwatchModal: () => void;
+  onOpenInquiryModal?: () => void;
   showCatalog?: boolean;
 }
 
@@ -22,6 +24,7 @@ export const Hero: React.FC<HeroProps> = ({
   onSelectCategory,
   onOpenQuoteModal,
   onOpenSwatchModal,
+  onOpenInquiryModal,
 }) => {
   const scrollToCatalog = () => {
     const elem = document.getElementById('institutional-sectors');
@@ -59,6 +62,18 @@ export const Hero: React.FC<HeroProps> = ({
               <FileText className="w-4 h-4" />
               <span>Calculate Bulk Price (₹)</span>
             </button>
+
+            {onOpenInquiryModal && (
+              <button
+                type="button"
+                id="hero-secondary-inquiry-modal"
+                onClick={onOpenInquiryModal}
+                className="inline-flex items-center justify-center gap-2 bg-white hover:bg-slate-100 text-slate-900 px-5 py-3 sm:py-2.5 rounded-full font-bold text-xs sm:text-sm transition-all shadow-md active:scale-98"
+              >
+                <Mail className="w-4 h-4 text-indigo-900" />
+                <span>Submit Inquiry Form</span>
+              </button>
+            )}
 
             <button
               type="button"
