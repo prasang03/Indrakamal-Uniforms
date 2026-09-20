@@ -1,0 +1,6 @@
+{
+  "name": "Indrakamal Uniforms",
+  "description": "Premier wholesale manufacturer of school uniforms, hospital scrubs, lab coats, staff attire & institutional bed linen in India. Request bulk quotes online.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
