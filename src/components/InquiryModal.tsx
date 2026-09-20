@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   X, 
   Send, 
@@ -13,9 +13,10 @@ import {
   Loader2,
   Clock,
   FileSpreadsheet,
-  AlertCircle
+  AlertCircle,
+  ShieldCheck
 } from 'lucide-react';
-import { sendGeneralInquiry } from '../services/inquiryService';
+import { sendGeneralInquiry, checkSubmissionRateLimit } from '../services/inquiryService';
 
 export interface AttachedQuoteData {
   totalGarments: number;
@@ -54,6 +55,17 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
   const [honeypot, setHoneypot] = useState('');
   const [openedAt] = useState<number>(() => Date.now());
   const [validationError, setValidationError] = useState<string | null>(null);
+  const [rateLimitNotice, setRateLimitNotice] = useState<string | null>(null);
+  const [isInstitutionalConfirmed, setIsInstitutionalConfirmed] = useState(false);
+
+  useEffect(() => {
+    const rateCheck = checkSubmissionRateLimit('inquiry');
+    if (!rateCheck.isAllowed) {
+      setRateLimitNotice(
+        `An inquiry (#${rateCheck.existingRef || 'INQ'}) was already submitted from this device. Our institutional desk is already reviewing it. (Cooldown: ~${rateCheck.remainingMinutes} min)`
+      );
+    }
+  }, []);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -264,6 +276,16 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
 
               {/* The Inquiry Form */}
               <form onSubmit={handleSubmit} className="space-y-4 text-xs">
+                {rateLimitNotice && (
+                  <div className="p-3 bg-amber-50 border border-amber-200 text-amber-900 rounded-xl text-xs flex items-start gap-2.5">
+                    <Clock className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+                    <div>
+                      <p className="font-semibold text-amber-950">Active Inquiry on File</p>
+                      <p className="text-[11px] text-amber-800 mt-0.5 leading-relaxed">{rateLimitNotice}</p>
+                    </div>
+                  </div>
+                )}
+
                 {/* Organization & Sector */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
@@ -273,9 +295,13 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
                     <input
                       type="text"
                       required
+                      minLength={4}
                       placeholder="e.g. St. Xavier's High School, Apollo Clinic"
                       value={formData.orgName}
-                      onChange={(e) => setFormData({ ...formData, orgName: e.target.value })}
+                      onChange={(e) => {
+                        setFormData({ ...formData, orgName: e.target.value });
+                        if (validationError) setValidationError(null);
+                      }}
                       className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-hidden text-base sm:text-xs"
                     />
                   </div>
@@ -309,9 +335,13 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
                     <input
                       type="text"
                       required
+                      minLength={3}
                       placeholder="e.g. Principal / Trustee / Purchase Head"
                       value={formData.contactName}
-                      onChange={(e) => setFormData({ ...formData, contactName: e.target.value })}
+                      onChange={(e) => {
+                        setFormData({ ...formData, contactName: e.target.value });
+                        if (validationError) setValidationError(null);
+                      }}
                       className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-hidden text-base sm:text-xs"
                     />
                   </div>
@@ -437,11 +467,17 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
 
                 {/* Requirements details */}
                 <div>
-                  <label className="block text-[11px] font-semibold text-slate-700 mb-1">
-                    Uniform Details &amp; Specific Requirements *
-                  </label>
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="block text-[11px] font-semibold text-slate-700">
+                      Uniform Details &amp; Specific Requirements *
+                    </label>
+                    <span className="text-[10px] text-slate-400">
+                      Min 15 characters
+                    </span>
+                  </div>
                   <textarea
                     required
+                    minLength={15}
                     rows={3}
                     placeholder="e.g. Navy blue checked shirts, dark grey pleated skirts/trousers, sports polo T-shirts for 4 house colors, embroidery of school crest on chest..."
                     value={formData.requirements}
@@ -451,6 +487,22 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
                     }}
                     className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-hidden text-base sm:text-xs"
                   />
+                </div>
+
+                {/* Institutional B2B Commitment Checkbox */}
+                <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl">
+                  <label className="flex items-start gap-2.5 cursor-pointer text-[11px] text-slate-700 select-none">
+                    <input
+                      type="checkbox"
+                      required
+                      checked={isInstitutionalConfirmed}
+                      onChange={(e) => setIsInstitutionalConfirmed(e.target.checked)}
+                      className="mt-0.5 rounded border-slate-300 text-[#001845] focus:ring-indigo-500 h-4 w-4 shrink-0"
+                    />
+                    <span className="leading-snug">
+                      <strong>Institutional Inquiry Confirmation:</strong> I confirm this is a bona fide institutional procurement request on behalf of a school, college, academy, or registered trust.
+                    </span>
+                  </label>
                 </div>
 
                 {validationError && (

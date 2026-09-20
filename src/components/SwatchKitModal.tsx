@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { X, Check, PackageCheck, Sparkles, Building2, Send, CheckCircle2, Loader2, AlertCircle } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { X, Check, PackageCheck, Sparkles, Building2, Send, CheckCircle2, Loader2, AlertCircle, Clock, ShieldCheck } from 'lucide-react';
 import { SwatchKitRequest } from '../types';
-import { sendSampleKitInquiry } from '../services/inquiryService';
+import { sendSampleKitInquiry, checkSubmissionRateLimit } from '../services/inquiryService';
 
 interface SwatchKitModalProps {
   isOpen: boolean;
@@ -27,6 +27,17 @@ export const SwatchKitModal: React.FC<SwatchKitModalProps> = ({ isOpen, onClose 
   const [honeypot, setHoneypot] = useState('');
   const [openedAt] = useState<number>(() => Date.now());
   const [validationError, setValidationError] = useState<string | null>(null);
+  const [rateLimitNotice, setRateLimitNotice] = useState<string | null>(null);
+  const [isInstitutionalConfirmed, setIsInstitutionalConfirmed] = useState(false);
+
+  useEffect(() => {
+    const rateCheck = checkSubmissionRateLimit('sample');
+    if (!rateCheck.isAllowed) {
+      setRateLimitNotice(
+        `A sample kit request (#${rateCheck.existingRef || 'SAMPLE'}) was already submitted from this device. Our dispatch team is preparing your package. (Cooldown: ~${rateCheck.remainingMinutes} min)`
+      );
+    }
+  }, []);
 
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [courierRef, setCourierRef] = useState('');
@@ -133,11 +144,24 @@ export const SwatchKitModal: React.FC<SwatchKitModalProps> = ({ isOpen, onClose 
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4 text-xs">
-              <div className="p-3.5 rounded-2xl bg-indigo-50/80 border border-indigo-200/70 text-[11px] text-indigo-950 flex items-center gap-2.5">
-                <Sparkles className="w-4 h-4 text-indigo-600 shrink-0" />
-                <span>
-                  Sample envelope contains: Real cloth samples of uniform shirts, heavy trouser twill, pleated skirt checks, PT sport polo fabric, and color shade card.
-                </span>
+              {rateLimitNotice && (
+                <div className="p-3 bg-amber-50 border border-amber-200 text-amber-900 rounded-xl text-xs flex items-start gap-2.5">
+                  <Clock className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+                  <div>
+                    <p className="font-semibold text-amber-950">Active Sample Request on File</p>
+                    <p className="text-[11px] text-amber-800 mt-0.5 leading-relaxed">{rateLimitNotice}</p>
+                  </div>
+                </div>
+              )}
+
+              <div className="p-3.5 rounded-2xl bg-indigo-50/80 border border-indigo-200/70 text-[11px] text-indigo-950 flex items-start gap-2.5">
+                <Sparkles className="w-4 h-4 text-indigo-600 shrink-0 mt-0.5" />
+                <div className="space-y-1 leading-relaxed">
+                  <p className="font-semibold text-indigo-900">Official Institutional Kit:</p>
+                  <p>
+                    Contains real cloth swatches of shirting checks, heavy suiting twill, pleated skirt fabrics, sports polo knit, and color shade card. Dispatched exclusively for schools, colleges, and bulk institutional requirements (min 50+ sets).
+                  </p>
+                </div>
               </div>
 
               {/* Sector selector */}
@@ -178,9 +202,13 @@ export const SwatchKitModal: React.FC<SwatchKitModalProps> = ({ isOpen, onClose 
                   <input
                     type="text"
                     required
+                    minLength={4}
                     placeholder="e.g. Saraswati Vidya Mandir"
                     value={formData.organizationName}
-                    onChange={(e) => setFormData({ ...formData, organizationName: e.target.value })}
+                    onChange={(e) => {
+                      setFormData({ ...formData, organizationName: e.target.value });
+                      if (validationError) setValidationError(null);
+                    }}
                     className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-hidden text-base sm:text-xs"
                   />
                 </div>
@@ -191,9 +219,13 @@ export const SwatchKitModal: React.FC<SwatchKitModalProps> = ({ isOpen, onClose 
                   <input
                     type="text"
                     required
-                    placeholder="Principal / Admin"
+                    minLength={3}
+                    placeholder="Principal / Admin / Trustee"
                     value={formData.fullName}
-                    onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
+                    onChange={(e) => {
+                      setFormData({ ...formData, fullName: e.target.value });
+                      if (validationError) setValidationError(null);
+                    }}
                     className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-hidden text-base sm:text-xs"
                   />
                 </div>
@@ -300,6 +332,22 @@ export const SwatchKitModal: React.FC<SwatchKitModalProps> = ({ isOpen, onClose 
                     className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-hidden text-base sm:text-xs"
                   />
                 </div>
+              </div>
+
+              {/* Institutional Evaluation Commitment Checkbox */}
+              <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl">
+                <label className="flex items-start gap-2.5 cursor-pointer text-[11px] text-slate-700 select-none">
+                  <input
+                    type="checkbox"
+                    required
+                    checked={isInstitutionalConfirmed}
+                    onChange={(e) => setIsInstitutionalConfirmed(e.target.checked)}
+                    className="mt-0.5 rounded border-slate-300 text-indigo-900 focus:ring-indigo-500 h-4 w-4 shrink-0"
+                  />
+                  <span className="leading-snug">
+                    <strong>Institutional Verification:</strong> I confirm this free swatch kit is requested for evaluation by an authorized school trustee, principal, or uniform purchasing committee (minimum order 50+ sets).
+                  </span>
+                </label>
               </div>
 
               {validationError && (
