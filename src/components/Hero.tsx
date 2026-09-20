@@ -41,7 +41,7 @@ export const Hero: React.FC<HeroProps> = ({
           </div>
 
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight font-heading leading-tight text-white">
-            Indrakamal Uniforms – Institutional &amp; School Attire
+            Indrakamal Uniforms – Institutional Uniforms &amp; Bulk Textile
           </h1>
 
           <p className="text-sm sm:text-base text-slate-300 leading-relaxed font-normal">
