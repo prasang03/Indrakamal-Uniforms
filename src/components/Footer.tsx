@@ -224,11 +224,11 @@ export const Footer: React.FC<FooterProps> = ({
                     Email Inquiry
                   </span>
                   <a
-                    href="mailto:indrakamaltradesolutions@gmail.com"
+                    href="mailto:info@indrakamal.in"
                     className="text-xs text-slate-300 hover:text-white transition-colors flex items-center gap-2 truncate"
                   >
                     <Mail className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
-                    <span className="truncate">indrakamaltradesolutions@gmail.com</span>
+                    <span className="truncate">info@indrakamal.in</span>
                   </a>
                 </div>
 

@@ -63,11 +63,11 @@ export const Header: React.FC<HeaderProps> = ({
             </a>
             <span className="hidden md:inline text-slate-600">|</span>
             <a 
-              href="mailto:indrakamaltradesolutions@gmail.com" 
+              href="mailto:info@indrakamal.in" 
               className="hidden md:inline-flex items-center gap-1.5 text-slate-300 hover:text-white transition-colors"
             >
               <Mail className="w-3 h-3 text-indigo-400 shrink-0" />
-              <span>indrakamaltradesolutions@gmail.com</span>
+              <span>info@indrakamal.in</span>
             </a>
           </div>
         </div>
