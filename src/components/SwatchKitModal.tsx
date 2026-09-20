@@ -9,8 +9,6 @@ interface SwatchKitModalProps {
 }
 
 export const SwatchKitModal: React.FC<SwatchKitModalProps> = ({ isOpen, onClose }) => {
-  if (!isOpen) return null;
-
   const [formData, setFormData] = useState<SwatchKitRequest>({
     fullName: '',
     organizationName: '',
@@ -31,17 +29,20 @@ export const SwatchKitModal: React.FC<SwatchKitModalProps> = ({ isOpen, onClose 
   const [isInstitutionalConfirmed, setIsInstitutionalConfirmed] = useState(false);
 
   useEffect(() => {
+    if (!isOpen) return;
     const rateCheck = checkSubmissionRateLimit('sample');
     if (!rateCheck.isAllowed) {
       setRateLimitNotice(
         `A sample kit request (#${rateCheck.existingRef || 'SAMPLE'}) was already submitted from this device. Our dispatch team is preparing your package. (Cooldown: ~${rateCheck.remainingMinutes} min)`
       );
     }
-  }, []);
+  }, [isOpen]);
 
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [courierRef, setCourierRef] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  if (!isOpen) return null;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

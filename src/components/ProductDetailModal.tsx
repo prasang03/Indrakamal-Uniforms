@@ -16,7 +16,7 @@ import {
 } from 'lucide-react';
 
 interface ProductDetailModalProps {
-  product: UniformItem | null;
+  product: UniformItem;
   onClose: () => void;
   onAddToQuote: (product: UniformItem, selectedColor: string) => void;
   isInQuote: boolean;
@@ -28,12 +28,12 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
   onAddToQuote,
   isInQuote,
 }) => {
-  if (!product) return null;
-
-  const [selectedColor, setSelectedColor] = useState<string>(product.colorOptions[0]?.name || '');
+  const [selectedColor, setSelectedColor] = useState<string>(product?.colorOptions?.[0]?.name || '');
   const [measurementUnit, setMeasurementUnit] = useState<'inches' | 'cm'>('inches');
   const [activeTab, setActiveTab] = useState<'specs' | 'sizing' | 'customization'>('specs');
   const [isZoomed, setIsZoomed] = useState<boolean>(false);
+
+  if (!product) return null;
 
   const unitMultiplier = measurementUnit === 'cm' ? 2.54 : 1;
 

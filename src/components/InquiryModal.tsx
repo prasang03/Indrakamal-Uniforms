@@ -37,8 +37,6 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
   onOpenCalculator,
   attachedQuote,
 }) => {
-  if (!isOpen) return null;
-
   const [formData, setFormData] = useState({
     orgName: '',
     contactName: '',
@@ -59,17 +57,20 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
   const [isInstitutionalConfirmed, setIsInstitutionalConfirmed] = useState(false);
 
   useEffect(() => {
+    if (!isOpen) return;
     const rateCheck = checkSubmissionRateLimit('inquiry');
     if (!rateCheck.isAllowed) {
       setRateLimitNotice(
         `An inquiry (#${rateCheck.existingRef || 'INQ'}) was already submitted from this device. Our institutional desk is already reviewing it. (Cooldown: ~${rateCheck.remainingMinutes} min)`
       );
     }
-  }, []);
+  }, [isOpen]);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [referenceId, setReferenceId] = useState('');
+
+  if (!isOpen) return null;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

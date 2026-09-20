@@ -192,12 +192,14 @@ export default function App() {
       />
 
       {/* Product Detail & Sizing Modal */}
-      <ProductDetailModal
-        product={selectedProduct}
-        onClose={() => setSelectedProduct(null)}
-        onAddToQuote={handleAddToQuote}
-        isInQuote={selectedProduct ? quoteUniformIds.includes(selectedProduct.id) : false}
-      />
+      {selectedProduct && (
+        <ProductDetailModal
+          product={selectedProduct}
+          onClose={() => setSelectedProduct(null)}
+          onAddToQuote={handleAddToQuote}
+          isInQuote={quoteUniformIds.includes(selectedProduct.id)}
+        />
+      )}
 
       {/* Institutional Bulk Quote Calculator Modal */}
       {isQuoteModalOpen && (
