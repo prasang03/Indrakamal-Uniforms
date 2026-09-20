@@ -9,7 +9,6 @@ import {
   ShieldCheck, 
   Building2, 
   Send, 
-  Printer, 
   ArrowRight,
   Info,
   Layers,
@@ -463,16 +462,6 @@ export const BulkQuoteCalculator: React.FC<BulkQuoteCalculatorProps> = ({
                 >
                   <Mail className="w-3.5 h-3.5 text-indigo-700" />
                   <span>Fill General Inquiry Form Instead</span>
-                </button>
-
-                {/* Print button */}
-                <button
-                  type="button"
-                  onClick={() => window.print()}
-                  className="w-full flex items-center justify-center gap-1.5 py-1.5 text-xs text-slate-500 hover:text-slate-800 transition-colors"
-                >
-                  <Printer className="w-3.5 h-3.5" />
-                  <span>Print / Save Estimate Slip</span>
                 </button>
               </div>
 
