@@ -35,16 +35,16 @@ export const Hero: React.FC<HeroProps> = ({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         
         {/* Main Clean Header */}
-        <div className="max-w-3xl space-y-4">
+        <div className="max-w-4xl xl:max-w-5xl space-y-4">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold text-amber-400 bg-amber-400/10 border border-amber-400/20">
             <span>Wholesale Supply &amp; Institutional Distribution</span>
           </div>
 
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight font-heading leading-tight text-white">
+          <h1 className="text-3xl sm:text-4xl lg:text-[2.65rem] xl:text-5xl font-extrabold tracking-tight font-heading leading-tight text-white lg:whitespace-nowrap">
             Institutional Uniforms &amp; Bulk Textiles
           </h1>
 
-          <p className="text-sm sm:text-base text-slate-300 leading-relaxed font-normal">
+          <p className="text-sm sm:text-base text-slate-300 leading-relaxed font-normal max-w-3xl">
             Premier wholesale manufacturer and direct supplier of school uniforms, hospital scrubs, staff &amp; faculty attire, and bulk institutional linens in India. Certified high-durability fabrics, computerized embroidery, and doorstep delivery.
           </p>
 
