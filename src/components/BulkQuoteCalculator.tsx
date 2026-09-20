@@ -13,7 +13,6 @@ import {
   Info,
   Layers,
   Truck,
-  Mail,
   CheckCircle2
 } from 'lucide-react';
 import { AttachedQuoteData } from './InquiryModal';
@@ -89,11 +88,6 @@ export const BulkQuoteCalculator: React.FC<BulkQuoteCalculatorProps> = ({
     });
   };
 
-  const handleOpenGeneralInquiry = () => {
-    onClose();
-    onOpenInquiryForm();
-  };
-
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-950/75 backdrop-blur-xs flex items-center justify-center p-2.5 sm:p-6 animate-in fade-in duration-200">
       <div 
@@ -116,57 +110,18 @@ export const BulkQuoteCalculator: React.FC<BulkQuoteCalculatorProps> = ({
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
-            {/* Cross-reference Button to Inquiry Form in Header */}
-            <button
-              type="button"
-              onClick={handleOpenGeneralInquiry}
-              className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-700 hover:text-indigo-950 bg-white hover:bg-slate-100 border border-slate-200 rounded-full transition-colors"
-            >
-              <Mail className="w-3.5 h-3.5 text-indigo-700" />
-              <span>Inquiry Form</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={onClose}
-              className="p-1.5 sm:p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-200 rounded-full transition-colors shrink-0"
-              aria-label="Close quote calculator"
-            >
-              <X className="w-5 h-5" />
-            </button>
-          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            className="p-1.5 sm:p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-200 rounded-full transition-colors shrink-0"
+            aria-label="Close quote calculator"
+          >
+            <X className="w-5 h-5" />
+          </button>
         </div>
 
         {/* Modal Content */}
         <div className="overflow-y-auto p-4 sm:p-8 space-y-6">
-          
-          {/* CROSS-REFERENCE BANNER: Link to General Inquiry Form */}
-          <div className="p-3.5 rounded-2xl bg-indigo-50/70 border border-indigo-200/80 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-            <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-xl bg-indigo-100 text-indigo-900 flex items-center justify-center shrink-0">
-                <Mail className="w-4 h-4 text-indigo-700" />
-              </div>
-              <div>
-                <div className="text-xs font-bold text-slate-900">
-                  Prefer submitting custom specifications or request a vendor proposal?
-                </div>
-                <div className="text-[11px] text-slate-600">
-                  Fill our dedicated Institutional Inquiry Form directly without line-item pricing.
-                </div>
-              </div>
-            </div>
-
-            <button
-              type="button"
-              onClick={handleOpenGeneralInquiry}
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold text-white bg-indigo-950 hover:bg-indigo-900 rounded-full transition-all shrink-0 shadow-xs active:scale-98"
-            >
-              <span>Go to Inquiry Form</span>
-              <ArrowRight className="w-3 h-3 text-amber-400" />
-            </button>
-          </div>
-
           {/* Active Quote Builder Layout */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
             
@@ -436,13 +391,13 @@ export const BulkQuoteCalculator: React.FC<BulkQuoteCalculatorProps> = ({
                 </div>
               </div>
 
-              {/* Action Buttons Section */}
+              {/* Action Button Section */}
               <div className="bg-slate-50 p-5 rounded-[2rem] border border-slate-200 space-y-3">
                 <div className="text-xs font-bold text-slate-900">
                   Ready to proceed with this estimate?
                 </div>
 
-                {/* PRIMARY CROSS-REFERENCE BUTTON: Transfer Estimate to Inquiry Form */}
+                {/* Primary Proceed Action Button */}
                 <button
                   type="button"
                   disabled={quoteItems.length === 0}
@@ -450,18 +405,8 @@ export const BulkQuoteCalculator: React.FC<BulkQuoteCalculatorProps> = ({
                   className="w-full flex items-center justify-center gap-2 py-3.5 px-5 bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold rounded-full shadow-md hover:shadow-lg transition-all active:scale-98 disabled:opacity-50 disabled:cursor-not-allowed text-xs sm:text-sm"
                 >
                   <Send className="w-4 h-4" />
-                  <span>Send Estimate via Inquiry Form</span>
+                  <span>Submit Estimate for Official Quotation</span>
                   <ArrowRight className="w-4 h-4 ml-0.5" />
-                </button>
-
-                {/* SECONDARY CROSS-REFERENCE BUTTON: General Inquiry */}
-                <button
-                  type="button"
-                  onClick={handleOpenGeneralInquiry}
-                  className="w-full flex items-center justify-center gap-2 py-2.5 px-4 bg-white hover:bg-slate-100 text-slate-700 font-semibold border border-slate-300 rounded-full transition-colors text-xs"
-                >
-                  <Mail className="w-3.5 h-3.5 text-indigo-700" />
-                  <span>Fill General Inquiry Form Instead</span>
                 </button>
               </div>
 
