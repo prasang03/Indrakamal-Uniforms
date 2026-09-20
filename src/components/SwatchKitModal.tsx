@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { X, Check, PackageCheck, Sparkles, Building2, Send, CheckCircle2 } from 'lucide-react';
+import { X, Check, PackageCheck, Sparkles, Building2, Send, CheckCircle2, Loader2 } from 'lucide-react';
 import { SwatchKitRequest } from '../types';
+import { sendSampleKitInquiry } from '../services/inquiryService';
 
 interface SwatchKitModalProps {
   isOpen: boolean;
@@ -25,11 +26,31 @@ export const SwatchKitModal: React.FC<SwatchKitModalProps> = ({ isOpen, onClose 
 
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [courierRef, setCourierRef] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isSubmitting) return;
+
+    setIsSubmitting(true);
     const ref = `SAMPLE-${Math.floor(100000 + Math.random() * 900000)}`;
     setCourierRef(ref);
+
+    await sendSampleKitInquiry({
+      reference: ref,
+      fullName: formData.fullName,
+      organizationName: formData.organizationName,
+      sector: formData.sector,
+      phone: formData.phone,
+      email: formData.email.trim() || undefined,
+      address: formData.shippingAddress,
+      city: formData.city,
+      pincode: formData.pincodeOrZip,
+      estimatedQuantity: formData.estimatedQuantity,
+      requirements: formData.specificRequirements.trim() || undefined,
+    });
+
+    setIsSubmitting(false);
     setIsSubmitted(true);
   };
 
@@ -77,6 +98,10 @@ export const SwatchKitModal: React.FC<SwatchKitModalProps> = ({ isOpen, onClose 
               <p className="text-xs text-slate-600 leading-relaxed max-w-md mx-auto">
                 Your sample kit with original institutional uniform cloth samples, shade cards, and stitching examples has been scheduled for dispatch to <strong>{formData.city}</strong>.
               </p>
+              <div className="inline-flex items-center justify-center gap-2 py-1.5 px-3.5 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-full text-xs font-semibold">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                <span>Sample dispatch request sent to info@indrakamal.in</span>
+              </div>
               <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 text-xs inline-block text-left space-y-1">
                 <div>Parcel Reference Number: <strong className="font-mono text-indigo-900">{courierRef}</strong></div>
                 <div>Expected Courier Arrival: <strong>3 – 4 Days by Speed Post / Courier</strong></div>
@@ -233,10 +258,20 @@ export const SwatchKitModal: React.FC<SwatchKitModalProps> = ({ isOpen, onClose 
               <div className="pt-3">
                 <button
                   type="submit"
-                  className="w-full flex items-center justify-center gap-2 py-3.5 px-5 bg-indigo-900 hover:bg-indigo-800 text-white font-bold rounded-full shadow-md transition-all active:scale-98"
+                  disabled={isSubmitting}
+                  className="w-full flex items-center justify-center gap-2 py-3.5 px-5 bg-indigo-900 hover:bg-indigo-800 text-white font-bold rounded-full shadow-md transition-all active:scale-98 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  <Send className="w-4 h-4 text-indigo-300" />
-                  <span>Send Me Free Cloth Samples by Post</span>
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="w-4 h-4 text-indigo-300 animate-spin" />
+                      <span>Sending Request to info@indrakamal.in...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Send className="w-4 h-4 text-indigo-300" />
+                      <span>Send Me Free Cloth Samples by Post</span>
+                    </>
+                  )}
                 </button>
               </div>
             </form>

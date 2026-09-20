@@ -13,8 +13,10 @@ import {
   CheckCircle2, 
   Printer, 
   ArrowRight,
-  Info
+  Info,
+  Loader2
 } from 'lucide-react';
+import { sendQuoteInquiry } from '../services/inquiryService';
 
 interface BulkQuoteCalculatorProps {
   quoteItems: BulkQuoteItem[];
@@ -51,6 +53,7 @@ export const BulkQuoteCalculator: React.FC<BulkQuoteCalculatorProps> = ({
   const [additionalNotes, setAdditionalNotes] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [quoteReference, setQuoteReference] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Total Garments Count
   const totalGarments = quoteItems.reduce((acc, curr) => acc + curr.quantity, 0);
@@ -80,10 +83,34 @@ export const BulkQuoteCalculator: React.FC<BulkQuoteCalculatorProps> = ({
 
   const totalEstimate = discountedSubtotal + embroideryFee + labelsFee + packagingFee;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isSubmitting) return;
+
+    setIsSubmitting(true);
     const ref = `IKU-IND-${new Date().getFullYear()}-${Math.floor(10000 + Math.random() * 90000)}`;
     setQuoteReference(ref);
+
+    const itemsSummary = quoteItems.length > 0 
+      ? quoteItems.map((item, idx) => 
+          `${idx + 1}. ${item.uniformName} (${item.category}): ${item.quantity} units | Color: ${item.selectedColor} | Fabric: ${item.selectedFabricGrade} | Embroidery: ${item.includeEmbroidery ? 'Yes (+₹15)' : 'No'}`
+        ).join('\n')
+      : 'General institutional uniform quotation';
+
+    await sendQuoteInquiry({
+      reference: ref,
+      organization: orgName,
+      contactPerson: contactName,
+      phone,
+      email: email.trim() || undefined,
+      location: city,
+      timeline,
+      notes: additionalNotes.trim() || undefined,
+      estimatedTotal: `₹${Math.round(totalEstimate).toLocaleString('en-IN')} (Garments: ${totalGarments}, ${tierLabel})`,
+      itemsSummary
+    });
+
+    setIsSubmitting(false);
     setIsSubmitted(true);
   };
 
@@ -136,8 +163,13 @@ export const BulkQuoteCalculator: React.FC<BulkQuoteCalculatorProps> = ({
                   Thank You, {contactName || 'Respected School Management'}!
                 </h3>
                 <p className="text-xs text-slate-600 mt-2 leading-relaxed">
-                  Your uniform requirement for <strong>{orgName}</strong> has been received by our uniform supply team.
+                  Your uniform requirement for <strong>{orgName}</strong> has been transmitted directly to our inbox at <strong>info@indrakamal.in</strong>.
                 </p>
+              </div>
+
+              <div className="inline-flex items-center justify-center gap-2 py-1.5 px-3.5 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-full text-xs font-semibold">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                <span>Inquiry specifications dispatched to info@indrakamal.in</span>
               </div>
 
               {/* RFQ Reference Box */}
@@ -537,11 +569,20 @@ export const BulkQuoteCalculator: React.FC<BulkQuoteCalculatorProps> = ({
                   <div className="pt-2">
                     <button
                       type="submit"
-                      disabled={quoteItems.length === 0}
+                      disabled={quoteItems.length === 0 || isSubmitting}
                       className="w-full flex items-center justify-center gap-2 py-3.5 px-5 bg-indigo-900 hover:bg-indigo-800 text-white font-bold rounded-full shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed active:scale-98"
                     >
-                      <Send className="w-4 h-4 text-indigo-300" />
-                      <span>Submit Inquiry &amp; Request Free Cloth Samples</span>
+                      {isSubmitting ? (
+                        <>
+                          <Loader2 className="w-4 h-4 text-indigo-300 animate-spin" />
+                          <span>Transmitting to info@indrakamal.in...</span>
+                        </>
+                      ) : (
+                        <>
+                          <Send className="w-4 h-4 text-indigo-300" />
+                          <span>Submit Inquiry &amp; Request Free Cloth Samples</span>
+                        </>
+                      )}
                     </button>
                     <p className="text-[10px] text-slate-500 text-center mt-1.5">
                       Direct phone / WhatsApp call from our uniform team within 4 working hours.
