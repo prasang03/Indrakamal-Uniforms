@@ -12,7 +12,8 @@ import {
   ArrowRight,
   Loader2,
   Clock,
-  FileSpreadsheet
+  FileSpreadsheet,
+  AlertCircle
 } from 'lucide-react';
 import { sendGeneralInquiry } from '../services/inquiryService';
 
@@ -50,6 +51,10 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
     timeline: 'Before School Reopens (June/July)',
   });
 
+  const [honeypot, setHoneypot] = useState('');
+  const [openedAt] = useState<number>(() => Date.now());
+  const [validationError, setValidationError] = useState<string | null>(null);
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [referenceId, setReferenceId] = useState('');
@@ -58,11 +63,14 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
     e.preventDefault();
     if (isSubmitting) return;
 
+    setValidationError(null);
     setIsSubmitting(true);
     const ref = `INQ-${new Date().getFullYear()}-${Math.floor(10000 + Math.random() * 90000)}`;
     setReferenceId(ref);
 
-    await sendGeneralInquiry({
+    const elapsedSeconds = (Date.now() - openedAt) / 1000;
+
+    const result = await sendGeneralInquiry({
       reference: ref,
       organization: formData.orgName,
       contactPerson: formData.contactName,
@@ -75,7 +83,15 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
       requirements: formData.requirements,
       timeline: formData.timeline,
       attachedQuote: attachedQuote || undefined,
+      honeypot,
+      elapsedSeconds,
     });
+
+    if (!result.success && result.error) {
+      setValidationError(result.error);
+      setIsSubmitting(false);
+      return;
+    }
 
     setIsSubmitting(false);
     setIsSubmitted(true);
@@ -314,6 +330,20 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
                   </div>
                 </div>
 
+                {/* Anti-spam trap: hidden from humans, automatically filled by web crawler bots */}
+                <div className="hidden" aria-hidden="true" style={{ display: 'none' }}>
+                  <label htmlFor="inquiry_company_fax">Leave this empty</label>
+                  <input
+                    id="inquiry_company_fax"
+                    type="text"
+                    name="inquiry_company_fax"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    value={honeypot}
+                    onChange={(e) => setHoneypot(e.target.value)}
+                  />
+                </div>
+
                 {/* Phone & Email */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
@@ -323,11 +353,18 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
                     <input
                       type="tel"
                       required
-                      placeholder="+91 98..."
+                      inputMode="numeric"
+                      placeholder="e.g. 98200 12345"
                       value={formData.phone}
-                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                      onChange={(e) => {
+                        setFormData({ ...formData, phone: e.target.value });
+                        if (validationError) setValidationError(null);
+                      }}
                       className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-hidden text-base sm:text-xs"
                     />
+                    <p className="text-[10px] text-slate-400 mt-1">
+                      10-digit Indian mobile number for quotation delivery
+                    </p>
                   </div>
 
                   <div>
@@ -338,7 +375,10 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
                       type="email"
                       placeholder="principal@school.edu.in"
                       value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      onChange={(e) => {
+                        setFormData({ ...formData, email: e.target.value });
+                        if (validationError) setValidationError(null);
+                      }}
                       className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-hidden text-base sm:text-xs"
                     />
                   </div>
@@ -405,10 +445,20 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
                     rows={3}
                     placeholder="e.g. Navy blue checked shirts, dark grey pleated skirts/trousers, sports polo T-shirts for 4 house colors, embroidery of school crest on chest..."
                     value={formData.requirements}
-                    onChange={(e) => setFormData({ ...formData, requirements: e.target.value })}
+                    onChange={(e) => {
+                      setFormData({ ...formData, requirements: e.target.value });
+                      if (validationError) setValidationError(null);
+                    }}
                     className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-hidden text-base sm:text-xs"
                   />
                 </div>
+
+                {validationError && (
+                  <div className="p-3 bg-rose-50 border border-rose-200 text-rose-800 rounded-xl text-xs flex items-center gap-2 animate-in fade-in">
+                    <AlertCircle className="w-4 h-4 text-rose-600 shrink-0" />
+                    <span>{validationError}</span>
+                  </div>
+                )}
 
                 <div className="pt-2">
                   <button

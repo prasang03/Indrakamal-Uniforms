@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Check, PackageCheck, Sparkles, Building2, Send, CheckCircle2, Loader2 } from 'lucide-react';
+import { X, Check, PackageCheck, Sparkles, Building2, Send, CheckCircle2, Loader2, AlertCircle } from 'lucide-react';
 import { SwatchKitRequest } from '../types';
 import { sendSampleKitInquiry } from '../services/inquiryService';
 
@@ -24,6 +24,10 @@ export const SwatchKitModal: React.FC<SwatchKitModalProps> = ({ isOpen, onClose 
     specificRequirements: '',
   });
 
+  const [honeypot, setHoneypot] = useState('');
+  const [openedAt] = useState<number>(() => Date.now());
+  const [validationError, setValidationError] = useState<string | null>(null);
+
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [courierRef, setCourierRef] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -32,11 +36,14 @@ export const SwatchKitModal: React.FC<SwatchKitModalProps> = ({ isOpen, onClose 
     e.preventDefault();
     if (isSubmitting) return;
 
+    setValidationError(null);
     setIsSubmitting(true);
     const ref = `SAMPLE-${Math.floor(100000 + Math.random() * 900000)}`;
     setCourierRef(ref);
 
-    await sendSampleKitInquiry({
+    const elapsedSeconds = (Date.now() - openedAt) / 1000;
+
+    const result = await sendSampleKitInquiry({
       reference: ref,
       fullName: formData.fullName,
       organizationName: formData.organizationName,
@@ -48,7 +55,15 @@ export const SwatchKitModal: React.FC<SwatchKitModalProps> = ({ isOpen, onClose 
       pincode: formData.pincodeOrZip,
       estimatedQuantity: formData.estimatedQuantity,
       requirements: formData.specificRequirements.trim() || undefined,
+      honeypot,
+      elapsedSeconds,
     });
+
+    if (!result.success && result.error) {
+      setValidationError(result.error);
+      setIsSubmitting(false);
+      return;
+    }
 
     setIsSubmitting(false);
     setIsSubmitted(true);
@@ -197,6 +212,20 @@ export const SwatchKitModal: React.FC<SwatchKitModalProps> = ({ isOpen, onClose 
                     className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-hidden text-base sm:text-xs"
                   />
                 </div>
+                {/* Anti-spam trap: hidden from humans, automatically filled by web crawler bots */}
+                <div className="hidden" aria-hidden="true" style={{ display: 'none' }}>
+                  <label htmlFor="swatch_company_fax">Leave this empty</label>
+                  <input
+                    id="swatch_company_fax"
+                    type="text"
+                    name="swatch_company_fax"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    value={honeypot}
+                    onChange={(e) => setHoneypot(e.target.value)}
+                  />
+                </div>
+
                 <div>
                   <label className="block text-[11px] font-semibold text-slate-700 mb-1">
                     Mobile / WhatsApp Number *
@@ -204,11 +233,18 @@ export const SwatchKitModal: React.FC<SwatchKitModalProps> = ({ isOpen, onClose 
                   <input
                     type="tel"
                     required
-                    placeholder="+91 98..."
+                    inputMode="numeric"
+                    placeholder="e.g. 98200 12345"
                     value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    onChange={(e) => {
+                      setFormData({ ...formData, phone: e.target.value });
+                      if (validationError) setValidationError(null);
+                    }}
                     className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-hidden text-base sm:text-xs"
                   />
+                  <p className="text-[10px] text-slate-400 mt-1">
+                    10-digit Indian mobile number for courier dispatch SMS
+                  </p>
                 </div>
               </div>
 
@@ -221,7 +257,10 @@ export const SwatchKitModal: React.FC<SwatchKitModalProps> = ({ isOpen, onClose 
                   required
                   placeholder="Complete school / institution campus address, city, district..."
                   value={formData.shippingAddress}
-                  onChange={(e) => setFormData({ ...formData, shippingAddress: e.target.value })}
+                  onChange={(e) => {
+                    setFormData({ ...formData, shippingAddress: e.target.value });
+                    if (validationError) setValidationError(null);
+                  }}
                   className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-hidden text-base sm:text-xs"
                 />
               </div>
@@ -236,7 +275,10 @@ export const SwatchKitModal: React.FC<SwatchKitModalProps> = ({ isOpen, onClose 
                     required
                     placeholder="e.g. Satara, Maharashtra"
                     value={formData.city}
-                    onChange={(e) => setFormData({ ...formData, city: e.target.value })}
+                    onChange={(e) => {
+                      setFormData({ ...formData, city: e.target.value });
+                      if (validationError) setValidationError(null);
+                    }}
                     className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-hidden text-base sm:text-xs"
                   />
                 </div>
@@ -247,13 +289,25 @@ export const SwatchKitModal: React.FC<SwatchKitModalProps> = ({ isOpen, onClose 
                   <input
                     type="text"
                     required
+                    inputMode="numeric"
+                    maxLength={6}
                     placeholder="e.g. 415001"
                     value={formData.pincodeOrZip}
-                    onChange={(e) => setFormData({ ...formData, pincodeOrZip: e.target.value })}
+                    onChange={(e) => {
+                      setFormData({ ...formData, pincodeOrZip: e.target.value });
+                      if (validationError) setValidationError(null);
+                    }}
                     className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-hidden text-base sm:text-xs"
                   />
                 </div>
               </div>
+
+              {validationError && (
+                <div className="p-3 bg-rose-50 border border-rose-200 text-rose-800 rounded-xl text-xs flex items-center gap-2 animate-in fade-in">
+                  <AlertCircle className="w-4 h-4 text-rose-600 shrink-0" />
+                  <span>{validationError}</span>
+                </div>
+              )}
 
               <div className="pt-3">
                 <button
@@ -264,7 +318,7 @@ export const SwatchKitModal: React.FC<SwatchKitModalProps> = ({ isOpen, onClose 
                   {isSubmitting ? (
                     <>
                       <Loader2 className="w-4 h-4 text-indigo-300 animate-spin" />
-                      <span>Sending Request to info@indrakamal.in...</span>
+                      <span>Dispatching Sample Request...</span>
                     </>
                   ) : (
                     <>
