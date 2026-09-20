@@ -68,6 +68,27 @@ export const Footer: React.FC<FooterProps> = ({
                   Doorstep Delivery
                 </span>
               </div>
+
+              {/* MSME & Startup India Certification Block */}
+              <div className="p-3 rounded-xl bg-slate-900/90 border border-slate-800 shadow-xs flex items-center justify-between gap-3">
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className="w-7 h-7 rounded-lg bg-emerald-950/80 border border-emerald-700/60 flex items-center justify-center shrink-0">
+                    <Award className="w-4 h-4 text-emerald-400" />
+                  </div>
+                  <div className="min-w-0">
+                    <h5 className="text-xs font-bold text-white leading-tight">
+                      MSME &amp; Startup Initiative Certified
+                    </h5>
+                    <p className="text-[10px] text-emerald-400 font-medium truncate">
+                      Government Recognized Enterprise
+                    </p>
+                  </div>
+                </div>
+                <div className="shrink-0 flex items-center gap-1 text-[10px] text-slate-400 bg-slate-950 px-2 py-1 rounded-md border border-slate-800">
+                  <ShieldCheck className="w-3 h-3 text-emerald-400" />
+                  <span>Cert. on request</span>
+                </div>
+              </div>
             </div>
 
             {/* Column 2: Uniform & Textile Divisions (lg:col-span-3) */}
@@ -266,23 +287,18 @@ export const Footer: React.FC<FooterProps> = ({
                 &copy; {currentYear} Indrakamal Ventures Pvt Ltd. All rights reserved.
               </p>
               <p className="text-[11px] text-slate-400">
-                Institutional Uniform &amp; Linen Partner • Nationwide Delivery Across India
+                Institutional Uniform &amp; Linen Partner • Nationwide Delivery Across India • MSME &amp; Startup India Recognized
               </p>
             </div>
 
             <div className="flex items-center gap-5 flex-wrap justify-center md:justify-end">
-              <span className="hover:text-white cursor-pointer transition-colors text-[11px]">Quality Compliance</span>
-              <span className="text-slate-800">•</span>
-              <span className="hover:text-white cursor-pointer transition-colors text-[11px]">Delivery Terms</span>
-              <span className="text-slate-800">•</span>
-              <span className="hover:text-white cursor-pointer transition-colors text-[11px]">Fabric &amp; Stitching Audits</span>
               <button
                 type="button"
                 onClick={scrollToTop}
-                className="ml-2 px-3.5 py-1.5 rounded-full bg-slate-900 border border-slate-800 text-indigo-400 hover:text-indigo-300 hover:bg-slate-850 transition-colors font-bold text-xs flex items-center gap-1.5"
+                className="px-3.5 py-1.5 rounded-full bg-slate-900 border border-slate-800 text-indigo-400 hover:text-indigo-300 hover:bg-slate-850 transition-colors font-bold text-xs flex items-center gap-1.5"
                 aria-label="Scroll back to top"
               >
-                <span>Top</span>
+                <span>Back to Top</span>
                 <ArrowUp className="w-3 h-3" />
               </button>
             </div>
