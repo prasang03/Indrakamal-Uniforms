@@ -103,7 +103,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
                 Institutional Inquiry &amp; RFQ Form
               </h2>
               <p className="text-[11px] sm:text-xs text-slate-500">
-                Direct wholesale supply inquiry sent to <strong>info@indrakamal.in</strong>
+                Direct wholesale supply inquiry for schools, trusts, &amp; organizations
               </p>
             </div>
           </div>
@@ -135,13 +135,13 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
                   Thank You, {formData.contactName || 'Respected Patron'}!
                 </h3>
                 <p className="text-xs text-slate-600 mt-2 leading-relaxed">
-                  Your institutional uniform inquiry for <strong>{formData.orgName}</strong> has been transmitted directly to <strong>info@indrakamal.in</strong>.
+                  Your institutional uniform inquiry for <strong>{formData.orgName}</strong> has been received by our sales team.
                 </p>
               </div>
 
               <div className="inline-flex items-center justify-center gap-2 py-1.5 px-3.5 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-full text-xs font-semibold">
                 <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                <span>Delivered to info@indrakamal.in</span>
+                <span>Inquiry Logged &amp; Assigned</span>
               </div>
 
               {/* Inquiry Details Box */}
@@ -419,17 +419,17 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
                     {isSubmitting ? (
                       <>
                         <Loader2 className="w-4 h-4 text-amber-400 animate-spin" />
-                        <span>Transmitting to info@indrakamal.in...</span>
+                        <span>Submitting...</span>
                       </>
                     ) : (
                       <>
                         <Send className="w-4 h-4 text-amber-400" />
-                        <span>Submit Official Inquiry to Indrakamal</span>
+                        <span>Submit</span>
                       </>
                     )}
                   </button>
                   <p className="text-[10px] text-slate-500 text-center mt-2">
-                    Delivered directly to <strong>info@indrakamal.in</strong> • Official response &amp; WhatsApp contact within 4 working hours.
+                    Official response &amp; WhatsApp contact within 4 working hours.
                   </p>
                 </div>
               </form>
