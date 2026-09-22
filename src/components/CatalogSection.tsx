@@ -172,7 +172,7 @@ export const CatalogSection: React.FC<CatalogSectionProps> = ({
         >
           <img
             src={item.imageUrl}
-            alt={item.name}
+            alt={`${item.name} - ${item.fabricComposition} ${item.subcategory} Institutional Uniform`}
             loading="lazy"
             decoding="async"
             referrerPolicy="no-referrer"

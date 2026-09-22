@@ -43,7 +43,7 @@ export const IndrakamalLogo: React.FC<LogoProps> = ({
             img.src = '/logo.svg';
           }
         }}
-        alt="Indrakamal Logo"
+        alt="Indrakamal Uniforms – Institutional Garments & Bulk Textiles"
         className={`shrink-0 transition-transform duration-300 hover:scale-105 object-contain ${currentSize.imgClass}`}
         referrerPolicy="no-referrer"
       />

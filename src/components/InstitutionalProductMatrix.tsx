@@ -206,7 +206,7 @@ export const InstitutionalProductMatrix: React.FC<InstitutionalProductMatrixProp
                   <div className="relative aspect-4/3 bg-white border-b border-slate-100 overflow-hidden flex items-center justify-center">
                     <img
                       src={item.imageUrl}
-                      alt={item.name}
+                      alt={`${item.name} - Institutional Bulk Uniform Manufacturer`}
                       referrerPolicy="no-referrer"
                       onError={(e) => {
                         if (item.fallbackImageUrl && e.currentTarget.src !== item.fallbackImageUrl) {
