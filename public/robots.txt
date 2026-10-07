@@ -1,6 +1,4 @@
 User-agent: *
 Allow: /
 
-# Host & Sitemap
-Host: https://www.indrakamal.in
 Sitemap: https://www.indrakamal.in/sitemap.xml
